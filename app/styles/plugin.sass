@@ -11,14 +11,20 @@
 $timetable-hour-column-width: 96px !default
 $timetable-hour-row-height: 46px !default
 $timetable-heading-height: 30px !default
-$timetable-breakpoint: "only screen and (max-width: 960px)"
-
+$timetable-breakpoint: "only screen and (max-width: 960px)" !default
 // colors & decoration
-$timetable-border-color: #DDD !default
-$timetable-row-header-color: #E7E7E7 !default
+$timetable-grid-color: #E5E5E5 !default
+$timetable-grid: 1px solid $timetable-grid-color !default
+$timetable-row-header-padding: 15px !default
+$timetable-row-header-color: #EFEFEF !default
+$timetable-row-separator: 1px solid white !default
+$timetable-row-header-gap: 5px solid transparent !default
+$timetable-row-uneven-color: #FDFDFD
+$timetable-row-even-color: #F4F4F4
 $timetable-entry-color: #EC6A5E !default
 $timetable-entry-color-hover: darken($timetable-entry-color, 10%) !default
 $timetable-entry-border: 1px solid darken($timetable-entry-color, 15%) !default
+$timetable-entry-padding: 10px
 
 /* ==========================================================================
  * Mixins
@@ -55,14 +61,14 @@ $timetable-entry-border: 1px solid darken($timetable-entry-color, 15%) !default
 		width: 25%
 		padding: 0 !important
 		margin-top: $timetable-hour-row-height
-		border-right: 5px solid transparent
+		border-right: $timetable-row-header-gap
 		li
-			padding: 0 10%
+			padding: 0 $timetable-row-header-padding
 			background-color: $timetable-row-header-color
 			line-height: $timetable-hour-row-height
 
 			&:not(:last-of-type)
-				border-bottom: 1px solid $timetable-border-color
+				border-bottom: $timetable-row-separator
 
 		.row-heading
 			+ellipsis
@@ -116,8 +122,6 @@ $timetable-entry-border: 1px solid darken($timetable-entry-color, 15%) !default
 			width: 60%
 
 	ul.room-timeline
-		$bgc-light: #F5F5F5
-		$fallback: null
 		border-left: none
 		position: relative
 
@@ -130,23 +134,22 @@ $timetable-entry-border: 1px solid darken($timetable-entry-color, 15%) !default
 			right: 0
 			bottom: 0
 		&:before
-			background-image: linear-gradient(to right, $timetable-border-color 1px, transparent 1px)
+			background-image: linear-gradient(to right, $timetable-grid-color 1px, transparent 1px)
 			background-size: $timetable-hour-column-width / 4 auto
 		&:after
-			background-image: linear-gradient(to right, $timetable-border-color, $timetable-border-color 1px, $bgc-light 1px, $bgc-light 2px, $timetable-border-color 2px, $timetable-border-color 3px, transparent 3px, transparent)
+			background-image: linear-gradient(to right, $timetable-grid-color, $timetable-grid-color 1px, $timetable-row-even-color 1px, $timetable-row-even-color 2px, $timetable-grid-color 2px, $timetable-grid-color 3px, transparent 3px, transparent)
 			background-size: $timetable-hour-column-width auto
 			background-position: -2px 0
 
 		li
-			border-bottom: 1px solid $timetable-border-color
 			position: relative
-			background-color: $bgc-light
+			background-color: $timetable-row-even-color
 			&:nth-of-type(odd)
-				background-color: white
+				background-color: $timetable-row-uneven-color
 			&:first-of-type
-				border-top: 1px solid $timetable-border-color
+				border-top: $timetable-grid
 			&:last-of-type
-				border-bottom: 1px solid $timetable-border-color
+				border-bottom: $timetable-grid
 
 	.time-entry
 		background-color: $timetable-entry-color
@@ -155,7 +158,7 @@ $timetable-entry-border: 1px solid darken($timetable-entry-color, 15%) !default
 		display: block
 		position: absolute
 		z-index: 2
-		padding: 0 1em
+		padding: 0 $timetable-entry-padding
 		white-space: normal
 		overflow: hidden
 		color: white
