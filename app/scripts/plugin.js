@@ -1,9 +1,7 @@
 'use strict';
 
-var Timetable = Timetable || function() {};
-
-Timetable.prototype = {
-	hello: function() {
-		alert('hello world');
-	}
+var Timetable = Timetable || function() {
+	this.message = 'hello world!';
 };
+
+Timetable.prototype = {};
