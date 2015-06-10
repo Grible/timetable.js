@@ -3,4 +3,36 @@ dist
 .tmp
 .sass-cache
 bower_components
-test/bower_components
+node_modules
+dist
+.tmp
+.sass-cache
+bower_components
+# Git stuff #
+#.gitignore
+
+# BBEdit stuff #
+.*~
+*.bbprojectsettings
+*.bbprojectd/
+
+# SASS #
+.sass-cache/*
+*/.sass-cache/*
+
+# OS generated files #
+.DS_Store
+.DS_Store?
+#._*
+.Spotlight-V100
+.Trashes
+#Icon?
+ehthumbs.db
+Thumbs.db
+
+# OS generated files #
+node_modules/*
+
+# Grunt stuff #
+aws-keys.json
+.ftppass

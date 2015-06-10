@@ -7,12 +7,13 @@ var browserSync = require('browser-sync');
 var reload = browserSync.reload;
 
 gulp.task('styles', function () {
-  return gulp.src('app/styles/main.scss')
+  return gulp.src('app/styles/*.sass')
     .pipe($.sourcemaps.init())
     .pipe($.sass({
       outputStyle: 'nested', // libsass doesn't support expanded yet
+      indentedSyntax: true,
       precision: 10,
-      includePaths: ['.'],
+      includePaths: ['.', 'bower_components'],
       onError: console.error.bind(console, 'Sass error:')
     }))
     .pipe($.postcss([
@@ -95,7 +96,7 @@ gulp.task('serve', ['styles', 'fonts'], function () {
     '.tmp/fonts/**/*'
   ]).on('change', reload);
 
-  gulp.watch('app/styles/**/*.scss', ['styles']);
+  gulp.watch('app/styles/**/*.sass', ['styles']);
   gulp.watch('app/fonts/**/*', ['fonts']);
   gulp.watch('bower.json', ['wiredep', 'fonts']);
 });
@@ -104,7 +105,7 @@ gulp.task('serve', ['styles', 'fonts'], function () {
 gulp.task('wiredep', function () {
   var wiredep = require('wiredep').stream;
 
-  gulp.src('app/styles/*.scss')
+  gulp.src('app/styles/*.sass')
     .pipe(wiredep({
       ignorePath: /^(\.\.\/)+/
     }))

@@ -12,8 +12,11 @@
     <!-- endbower -->
     <!-- endbuild -->
 
-    <!-- build:css styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
+    <!-- build:css styles/timetablejs.css -->
+    <link rel="stylesheet" href="styles/plugin.css">
+    <!-- endbuild -->
+    <!-- build:css styles/demo.css -->
+    <link rel="stylesheet" href="styles/demo.css">
     <!-- endbuild -->
 
   </head>
@@ -29,6 +32,49 @@
         <li>HTML5 Boilerplate</li>
         <li>Sass</li>
       </ul>
+      <div class="test">Plugin works</div>
+    </div>
+
+    <div class="timetable">
+      <aside>
+        <ul>
+          <li><h6>Plexfit</h6></li>
+          <li><h6>Spinningzaal</h6></li>
+          <li><h6>Zaal A</h6></li>
+          <li><h6>Zaal consectetur adipisicing</h6></li>
+          <li><h6>Victor's office</h6></li>
+          <li><h6>Tennisveld 1</h6></li>
+        </ul>
+      </aside>
+      <section>
+        <time>
+          <header>
+            <ul>
+              <li><b>08:00</b></li><li><b>09:00</b></li><li><b>10:00</b></li><li><b>11:00</b></li><li><b>12:00</b></li><li><b>13:00</b></li><li><b>14:00</b></li><li><b>15:00</b></li><li><b>16:00</b></li><li><b>17:00</b></li><li><b>18:00</b></li><li><b>19:00</b></li><li><b>20:00</b></li><li><b>21:00</b></li><li><b>22:00</b></li>
+            </ul>
+          </header>
+          <ul class="room-timeline">
+            <li>
+              <a class="time-entry" title="Zumba" href="#" style="width: 7.1428%; left: 7.1428%"><small>Zumba</small></a>
+            </li>
+            <li>
+              <a class="time-entry" title="Virtual Spinning" href="#" style="width: 7.1428%; left: 14.2856%"><small>Virtual Spinning</small></a>
+              <a class="time-entry" title="Glow-in-the-dark Spinning" href="#" style="width: 10.7143%; left: 75%"><small>Glow-in-the-dark Spinning</small></a>
+            </li>
+            <li>
+              <a class="time-entry" title="Synchroon Tapdansen" href="#" style="width: 7.1428%; left: 10.7143%"><small>Synchroon Tapdansen</small></a>
+              <a class="time-entry" title="Frisbeetraining" href="#" style="width: 7.1428%; left: 28.5714%"><small>Frisbeetraining</small></a>
+              <a class="time-entry" title="Frisbeetraining Senioren" href="#" style="width: 3.5714%; left: 35.7142%"><small>Frisbeetraining Senioren</small></a>
+            </li>
+            <li>
+            </li>
+            <li>
+              <a class="time-entry" title="Hackathon" href="#" style="width: 21.4285%; left: 35.7142%"><small>Hackathon</small></a>
+            </li>
+            <li></li>
+          </ul>
+        </time>
+      </section>
     </div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
@@ -43,12 +89,11 @@
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="/bower_components/jquery/dist/jquery.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
-        <!-- build:js scripts/main.js -->
-        <script src="scripts/main.js"></script>
-        <!-- endbuild -->
+    <!-- build:js scripts/timetable.js -->
+    <script src="scripts/main.js"></script>
+    <!-- endbuild -->
 </body>
 </html>

@@ -1,0 +1,153 @@
+// bower:scss
+// endbower
+
+@import bourbon/app/assets/stylesheets/bourbon
+
+/* ==========================================================================
+ * Default settings
+ * ==========================================================================
+
+$hour-column-width: 96px !default
+$hour-row-height: 46px !default
+$table-heading-height: 30px !default
+
+$primary-color: #44C8F5
+$secondary-color: darken($primary-color, 30%)
+$dark-grey: #57595B
+$grey: #9B9B9B
+$light-grey: #E7E7E7
+$very-light-grey: #F0F0F0
+
+$black: #2F2F2F
+$white: #fff
+
+/* ==========================================================================
+ * Mixins
+ * ==========================================================================
+
+=valign-middle
+	position: relative
+	top: 50%
+	+transform(translateY(-50%))
+
+=valign-parent
+	+transform-style(preserve-3d)
+
+/* ==========================================================================
+ * Timetable
+ * ==========================================================================
+
+.timetable
+	box-sizing: border-box
+	+clearfix
+
+	*, *:before, *:after
+		box-sizing: inherit
+
+	aside, section
+		float: left
+
+	aside
+		width: 25%
+		padding: 0 !important
+		margin-top: $table-heading-height
+		border-right: 5px solid white
+		li
+			padding: 0.8em 1.2em
+			background-color: $light-grey
+
+			h6
+				+ellipsis
+
+			&:not(:last-of-type)
+				border-bottom: 1px solid white
+
+	ul
+		list-style-type: none
+		margin: 0
+
+	aside li, time li
+		height: $hour-row-height
+
+	section
+		width: 75%
+		padding: 0 !important
+		overflow-x: scroll
+
+		time
+			white-space: nowrap
+			display: inline-block
+
+		header
+			height: $table-heading-height
+			li
+				display: inline-block
+				overflow: visible
+				width: 0
+
+				&:not(:last-of-type)
+					margin-right: $hour-column-width
+					&:not(:first-of-type) b
+						margin-left: -1.2em
+				&:last-of-type b
+					margin-left: -2.4em
+
+	// @media #{$small-down}
+	// 	aside
+	// 		+grid-column(5)
+	// 	section
+	// 		+grid-column(7)
+
+	ul.room-timeline
+		$bgc-light: #F5F5F5
+		border-left: none
+		position: relative
+
+		&:after, &:before
+			content: ""
+			position: absolute
+			z-index: 1
+			left: 0
+			top: 0
+			right: 0
+			bottom: 0
+		&:before
+			+linear-gradient(to right, $light-grey 1px, transparent 1px)
+			background-size: $hour-column-width / 4 auto
+		&:after
+			+linear-gradient(to right, $light-grey, $light-grey 1px, $bgc-light 1px, $bgc-light 2px, $light-grey 2px, $light-grey 3px, transparent 3px, transparent)
+			background-size: $hour-column-width auto
+			background-position: -2px 0
+
+		li
+			border-bottom: 1px solid white
+			position: relative
+			background-color: $bgc-light
+			&:nth-of-type(odd)
+				background-color: #FCFCFC
+
+			&:first-of-type
+				border-top: 1px solid $light-grey
+			&:last-of-type
+				border-bottom: 1px solid $light-grey
+
+	.time-entry
+		background-color: $primary-color
+		transition: 200ms background-color
+		height: $hour-row-height - 1px
+		display: block
+		position: absolute
+		z-index: 2
+		padding: 0 1em
+		white-space: normal
+		overflow: hidden
+		color: white
+		border: 1px solid #62B7D8
+		+valign-parent
+		small
+			+valign-middle
+			display: block
+
+		&:hover
+			background-color: $secondary-color
+
