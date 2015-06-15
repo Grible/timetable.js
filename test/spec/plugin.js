@@ -33,6 +33,17 @@
       expect(function(){tt.addLocations({});}).to.throw('Tried to add locations in wrong format');
     });
 
+    it('should be possible to add events for an existing location', function () {
+      var tt = this.timetable;
+      tt.addLocations(['loc1', 'loc2']);
+
+      expect(tt.addEvent('Zumba', 'loc2', 9, 17, '#').events[0]).to.deep.equal({name: 'Zumba', location: 'loc2', hourStart: 9, hourEnd: 17, url: '#'});
+      expect(tt.addEvent('DIY Fireworks', 'loc1', 10, 11, '#').events[1]).to.deep.equal({name: 'DIY Fireworks', location: 'loc1', hourStart: 10, hourEnd: 11, url: '#'});
+      expect(function(){tt.addEvent('DIY Fireworks', 'Area 51', 10, 11, '#');}).to.throw('Unknown location');
+      expect(function(){tt.addEvent('DIY Fireworks', 'loc2', 10, 25, '#');}).to.throw('Invalid hour range');
+      expect(function(){tt.addEvent('DIY Fireworks', 'loc2', 10, 9, '#');}).to.throw('Invalid hour range');
+    });
+
   });
 
 })();
