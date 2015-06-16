@@ -11,6 +11,12 @@ var Timetable = function() {
 	this.events = [];
 };
 
+Timetable.Renderer = function(tt) {
+	if (!tt instanceof Timetable) {
+		throw new Error('Initialize renderer using a Timetable');
+	}
+	this.timetable = tt;
+};
 
 (function() {
 	function isValidHourRange(start, end) {
@@ -78,6 +84,39 @@ var Timetable = function() {
 			});
 
 			return this;
+		}
+	};
+
+	function emptyNode(node) {
+		while (node.firstChild) {
+			node.removeChild(node.firstChild);
+		}
+	}
+
+	function prettyFormatHour(hour) {
+		return hour + ':00';
+	}
+
+	Timetable.Renderer.prototype = {
+		draw: function(selector) {
+			var container = document.querySelector(selector);
+			if (container === null) {
+				throw new Error('Timetable container not found');
+			}
+			emptyNode(container);
+
+			var sectionNode = container.appendChild(document.createElement('section'));
+			var timeNode = sectionNode.appendChild(document.createElement('time'));
+			var headerNode = timeNode.appendChild(document.createElement('header'));
+			var ulNode = headerNode.appendChild(document.createElement('ul'));
+
+			for (var hour=this.timetable.scope.hourStart; hour <= this.timetable.scope.hourEnd; hour++) {
+				var liNode = ulNode.appendChild(document.createElement('li'));
+				var spanNode = liNode.appendChild(document.createElement('span'));
+				spanNode.className = 'time-label';
+				spanNode.textContent = prettyFormatHour(hour);
+			}
+
 		}
 	};
 

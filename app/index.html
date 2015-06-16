@@ -87,6 +87,62 @@
       </section>
     </div>
 
+    <div id="example-timetable" class="timetable">
+      <aside>
+        <ul>
+          <li><span class="row-heading">Plexfit</span></li>
+          <li><span class="row-heading">Spinningzaal</span></li>
+          <li><span class="row-heading">Zaal A</span></li>
+          <li><span class="row-heading">Zaal consectetur adipisicing</span></li>
+          <li><span class="row-heading">Victor's office</span></li>
+          <li><span class="row-heading">Tennisveld 1</span></li>
+        </ul>
+      </aside>
+      <section>
+        <time>
+          <header>
+            <ul>
+              <li><span class="time-label">08:00</span></li>
+              <li><span class="time-label">09:00</span></li>
+              <li><span class="time-label">10:00</span></li>
+              <li><span class="time-label">11:00</span></li>
+              <li><span class="time-label">12:00</span></li>
+              <li><span class="time-label">13:00</span></li>
+              <li><span class="time-label">14:00</span></li>
+              <li><span class="time-label">15:00</span></li>
+              <li><span class="time-label">16:00</span></li>
+              <li><span class="time-label">17:00</span></li>
+              <li><span class="time-label">18:00</span></li>
+              <li><span class="time-label">19:00</span></li>
+              <li><span class="time-label">20:00</span></li>
+              <li><span class="time-label">21:00</span></li>
+              <li><span class="time-label">22:00</span></li>
+            </ul>
+          </header>
+          <ul class="room-timeline">
+            <li>
+              <a class="time-entry" title="Zumba" href="#" style="width: 7.1428%; left: 7.1428%"><small>Zumba</small></a>
+            </li>
+            <li>
+              <a class="time-entry" title="Virtual Spinning" href="#" style="width: 7.1428%; left: 14.2856%"><small>Virtual Spinning</small></a>
+              <a class="time-entry" title="Glow-in-the-dark Spinning" href="#" style="width: 10.7143%; left: 75%"><small>Glow-in-the-dark Spinning</small></a>
+            </li>
+            <li>
+              <a class="time-entry" title="Synchroon Tapdansen" href="#" style="width: 7.1428%; left: 10.7143%"><small>Synchroon Tapdansen</small></a>
+              <a class="time-entry" title="Frisbeetraining" href="#" style="width: 7.1428%; left: 28.5714%"><small>Frisbeetraining</small></a>
+              <a class="time-entry" title="Frisbeetraining Senioren" href="#" style="width: 3.5714%; left: 35.7142%"><small>Frisbeetraining Senioren</small></a>
+            </li>
+            <li>
+            </li>
+            <li>
+              <a class="time-entry" title="Hackathon" href="#" style="width: 21.4285%; left: 35.7142%"><small>Hackathon</small></a>
+            </li>
+            <li></li>
+          </ul>
+        </time>
+      </section>
+    </div>
+
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
       (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
@@ -105,5 +161,11 @@
     <!-- build:js scripts/timetable.js -->
     <script src="scripts/plugin.js"></script>
     <!-- endbuild -->
+
+    <script>
+      var timetable = new Timetable();
+      var renderer = new Timetable.Renderer(timetable);
+      renderer.draw('#example-timetable');
+    </script>
 </body>
 </html>
