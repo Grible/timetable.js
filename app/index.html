@@ -164,7 +164,11 @@
 
     <script>
       var timetable = new Timetable();
+
+      timetable.addLocations(['Rotterdam', 'Madrid', 'London', 'New York', 'Los Angeles', 'Jakarta', 'Tokyo']);
+
       var renderer = new Timetable.Renderer(timetable);
+      // timetable.setScope(13, 19);
       renderer.draw('#example-timetable');
     </script>
 </body>

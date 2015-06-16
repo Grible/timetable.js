@@ -94,29 +94,48 @@ Timetable.Renderer = function(tt) {
 	}
 
 	function prettyFormatHour(hour) {
-		return hour + ':00';
+		var prefix = hour < 10 ? '0' : '';
+		return prefix + hour + ':00';
 	}
 
 	Timetable.Renderer.prototype = {
 		draw: function(selector) {
-			var container = document.querySelector(selector);
-			if (container === null) {
-				throw new Error('Timetable container not found');
+			var timetable = this.timetable;
+
+			function checkContainerPrecondition(container) {
+				if (container === null) {
+					throw new Error('Timetable container not found');
+				}
 			}
+			function appendTimeLabels(ulNode) {
+				for (var hour=timetable.scope.hourStart; hour <= timetable.scope.hourEnd; hour++) {
+					var liNode = ulNode.appendChild(document.createElement('li'));
+					var spanNode = liNode.appendChild(document.createElement('span'));
+					spanNode.className = 'time-label';
+					spanNode.textContent = prettyFormatHour(hour);
+				}
+			}
+
+			var container = document.querySelector(selector);
+			checkContainerPrecondition(container);
 			emptyNode(container);
 
 			var sectionNode = container.appendChild(document.createElement('section'));
 			var timeNode = sectionNode.appendChild(document.createElement('time'));
 			var headerNode = timeNode.appendChild(document.createElement('header'));
-			var ulNode = headerNode.appendChild(document.createElement('ul'));
+			var sectionULNode = headerNode.appendChild(document.createElement('ul'));
 
-			for (var hour=this.timetable.scope.hourStart; hour <= this.timetable.scope.hourEnd; hour++) {
-				var liNode = ulNode.appendChild(document.createElement('li'));
+			appendTimeLabels(sectionULNode);
+
+			var asideNode = container.appendChild(document.createElement('aside'));
+			var asideULNode = asideNode.appendChild(document.createElement('ul'));
+
+			for (var k=0; k<timetable.locations.length; k++) {
+				var liNode = asideULNode.appendChild(document.createElement('li'));
 				var spanNode = liNode.appendChild(document.createElement('span'));
-				spanNode.className = 'time-label';
-				spanNode.textContent = prettyFormatHour(hour);
+				spanNode.className = 'row-heading';
+				spanNode.textContent = timetable.locations[k];
 			}
-
 		}
 	};
 
