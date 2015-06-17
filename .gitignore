@@ -1,20 +1,7 @@
 node_modules
-dist
 .tmp
 .sass-cache
 bower_components
-node_modules
-dist
-.tmp
-.sass-cache
-bower_components
-# Git stuff #
-#.gitignore
-
-# BBEdit stuff #
-.*~
-*.bbprojectsettings
-*.bbprojectd/
 
 # SASS #
 .sass-cache/*
@@ -29,10 +16,3 @@ bower_components
 #Icon?
 ehthumbs.db
 Thumbs.db
-
-# OS generated files #
-node_modules/*
-
-# Grunt stuff #
-aws-keys.json
-.ftppass

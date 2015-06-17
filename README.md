@@ -1,2 +1,70 @@
-# timetable.js
-Vanilla javascript plugin for building nice responsive timetables
+# Timetable.js
+Vanilla javascript plugin for building nice responsive timetables. Provides a simple javascript interface to add events and locations which can be rendered to nice html. Works on mobile devices as well. Check the **[DEMO](http://timetablejs.grible.co)**.
+
+## Installation
+Install with bower, or alternatively download the ZIP:
+
+```
+bower install timetable
+```
+
+Load the plugin and styles in your HTML (styles in the HTML HEAD preferably):
+```html
+<link rel="stylesheet" href="timetablejs.css">
+
+<script src="timetable.min.js"></script>
+```
+Add a timetable placeholder:
+```html
+<div class="timetable"></div>
+```
+
+## Usage
+Make a timetable object, optionally set the scope in hours (the visible hours in the timetable):
+```javascript
+var timetable = new Timetable();
+timetable.setScope(9, 17); // optional, only whole hours
+```
+Add some locations:
+```javascript
+timetable.addLocations(['Rotterdam', 'Madrid', 'London', 'New York']);
+```
+Add your events using `addEvent(name, location, startDate, endDate, url)`:
+```javascript
+timetable.addEvent('Sightseeing', 'Rotterdam', new Date(2015,7,17,10,45), new Date(2015,7,17,12,30), 'http://www.github.com');
+```
+
+Last, render the thing in your previously created timetable placeholder:
+```javascript
+var renderer = new Timetable.Renderer(timetable);
+renderer.draw('.timetable'); // can be any css selector
+```
+That's it!
+
+## Changing the looks
+Instead of adding the `timetablejs.css` directly to your HTML, you could import `app/styles/plugin.sass` to your own SASS file. All colors and spacing values are defined as default variables which you can easily override. These are the defaults:
+```sass
+// dimensions
+$timetable-hour-column-width: 96px !default
+$timetable-hour-row-height: 46px !default
+$timetable-heading-height: 30px !default
+$timetable-breakpoint: "only screen and (max-width: 960px)" !default
+// colors & decoration
+$timetable-grid-color: #E5E5E5 !default
+$timetable-grid: 1px solid $timetable-grid-color !default
+$timetable-row-header-padding: 15px !default
+$timetable-row-header-color: #EFEFEF !default
+$timetable-row-separator: 1px solid white !default
+$timetable-row-header-gap: 5px solid transparent !default
+$timetable-row-uneven-color: #FDFDFD
+$timetable-row-even-color: #F4F4F4
+$timetable-entry-color: #EC6A5E !default
+$timetable-entry-color-hover: darken($timetable-entry-color, 10%) !default
+$timetable-entry-border: 1px solid darken($timetable-entry-color, 15%) !default
+$timetable-entry-padding: 10px
+```
+
+Alternatively you could override the css styles manually.
+
+## Contributing
+Please use the Github issue tracker for issues/feature requests. We use Gulp for development and Mocha with Chai for unit testing. The styles are defined in SASS. Feel free to comment/contribute.
