@@ -66,5 +66,8 @@ $timetable-entry-padding: 10px
 
 Alternatively you could override the css styles manually.
 
+## Browser support
+Timetable.js has been designed to work with modern browsers (only). It has been tested with the latest version of the most common browsers.
+
 ## Contributing
 Please use the Github issue tracker for issues/feature requests. We use Gulp for development and Mocha with Chai for unit testing. The styles are defined in SASS. Feel free to comment/contribute.
