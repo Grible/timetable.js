@@ -12,7 +12,7 @@ var Timetable = function() {
 };
 
 Timetable.Renderer = function(tt) {
-	if (!tt instanceof Timetable) {
+	if (!(tt instanceof Timetable)) {
 		throw new Error('Initialize renderer using a Timetable');
 	}
 	this.timetable = tt;

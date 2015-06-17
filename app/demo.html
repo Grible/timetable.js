@@ -16,33 +16,21 @@
     <!-- build:css styles/demo.css -->
     <link rel="stylesheet" href="styles/demo.css">
     <!-- endbuild -->
-
   </head>
   <body>
 
     <div class="hero-unit">
-      <h1>Timetable.js</h1>
-      <p>Check out this demo</p>
+      <h1>Timetable.js demo</h1>
+      <p>Vanilla javascript plugin for building nice responsive timetables. More info on <a href="https://github.com/Grible/timetable.js" target="_blank">Github</a>.</p>
     </div>
 
     <div class="timetable"></div>
-
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-    <script>
-      (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-      e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-      e.src='//www.google-analytics.com/analytics.js';
-      r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-      ga('create','UA-XXXXX-X');ga('send','pageview');
-    </script>
-
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
     <!-- endbower -->
     <!-- endbuild -->
 
-    <!-- build:js scripts/timetable.js -->
+    <!-- build:js scripts/timetable.min.js -->
     <script src="scripts/plugin.js"></script>
     <!-- endbuild -->
 
@@ -60,6 +48,16 @@
 
       var renderer = new Timetable.Renderer(timetable);
       renderer.draw('.timetable');
+    </script>
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    <script>
+      (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+      e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+      e.src='//www.google-analytics.com/analytics.js';
+      r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+      ga('create','UA-XXXXX-X');ga('send','pageview');
     </script>
 </body>
 </html>
