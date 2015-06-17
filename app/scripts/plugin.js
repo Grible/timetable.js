@@ -77,7 +77,7 @@ Timetable.Renderer = function(tt) {
 				throw new Error('Unknown location');
 			}
 			if (!isValidTimeRange(start, end)) {
-				throw new Error('Invalid time range');
+				throw new Error('Invalid time range: ' + JSON.stringify([start, end]));
 			}
 
 			this.events.push({
@@ -128,18 +128,61 @@ Timetable.Renderer = function(tt) {
 			function appendTimetableSection(container) {
 				var sectionNode = container.appendChild(document.createElement('section'));
 				var timeNode = sectionNode.appendChild(document.createElement('time'));
-				var headerNode = timeNode.appendChild(document.createElement('header'));
-				var sectionULNode = headerNode.appendChild(document.createElement('ul'));
-
-				appendTimeLabels(sectionULNode);
+				appendColumnHeaders(timeNode);
+				appendTimeRows(timeNode);
 			}
-			function appendTimeLabels(ulNode) {
+			function appendColumnHeaders(node) {
+				var headerNode = node.appendChild(document.createElement('header'));
+				var headerULNode = headerNode.appendChild(document.createElement('ul'));
 				for (var hour=timetable.scope.hourStart; hour <= timetable.scope.hourEnd; hour++) {
-					var liNode = ulNode.appendChild(document.createElement('li'));
+					var liNode = headerULNode.appendChild(document.createElement('li'));
 					var spanNode = liNode.appendChild(document.createElement('span'));
 					spanNode.className = 'time-label';
 					spanNode.textContent = prettyFormatHour(hour);
 				}
+			}
+			function appendTimeRows(node) {
+				var ulNode = node.appendChild(document.createElement('ul'));
+				ulNode.className = 'room-timeline';
+				for (var k=0; k<timetable.locations.length; k++) {
+					var liNode = ulNode.appendChild(document.createElement('li'));
+					appendLocationEvents(timetable.locations[k], liNode);
+				}
+			}
+			function appendLocationEvents(location, node) {
+				for (var k=0; k<timetable.events.length; k++) {
+					var event = timetable.events[k];
+					if (event.location === location) {
+						appendEvent(event, node);
+					}
+				}
+			}
+			function appendEvent(event, node) {
+				var aNode = node.appendChild(document.createElement('a'));
+				var smallNode = aNode.appendChild(document.createElement('small'));
+				aNode.title = event.name;
+				aNode.href = event.url;
+				aNode.className = 'time-entry';
+				aNode.style.width = computeEventBlockWidth(event);
+				aNode.style.left = computeEventBlockOffset(event);
+				smallNode.textContent = event.name;
+
+				// <a class="time-entry" title="Zumba" href="#" style="width: 7.1428%; left: 7.1428%"><small>Zumba</small></a>
+			}
+			function computeEventBlockWidth(event) {
+				var start = event.startDate;
+				var end = event.endDate;
+				var durationHours = end.getHours() - start.getHours();
+				var minuteDiff = end.getMinutes() - start.getMinutes();
+				durationHours += minuteDiff / 60;
+				var scopeDurationHours = timetable.scope.hourEnd - timetable.scope.hourStart;
+				return durationHours / scopeDurationHours * 100 + '%';
+			}
+			function computeEventBlockOffset(event) {
+				var start = event.startDate;
+				var startHours = start.getHours() + (start.getMinutes() / 60);
+				var scopeDurationHours = timetable.scope.hourEnd - timetable.scope.hourStart;
+				return (startHours - timetable.scope.hourStart) / scopeDurationHours * 100 + '%';
 			}
 
 			var container = document.querySelector(selector);
