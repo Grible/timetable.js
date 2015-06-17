@@ -34,6 +34,11 @@ Timetable.Renderer = function(tt) {
 	function locationExistsIn(loc, locs) {
 		return locs.indexOf(loc) !== -1;
 	}
+	function isValidTimeRange(start, end) {
+		var correctTypes = start instanceof Date && end instanceof Date;
+		var correctOrder = start.getHours() < end.getHours() || (start.getHours() === end.getHours() && start.getMinutes() < end.getMinutes());
+		return correctTypes && correctOrder;
+	}
 
 	Timetable.prototype = {
 		setScope: function(start, end) {
@@ -71,15 +76,15 @@ Timetable.Renderer = function(tt) {
 			if (!locationExistsIn(location, this.locations)) {
 				throw new Error('Unknown location');
 			}
-			if (!isValidHourRange(start, end)) {
-				throw new Error('Invalid hour range');
+			if (!isValidTimeRange(start, end)) {
+				throw new Error('Invalid time range');
 			}
 
 			this.events.push({
 				name: name,
 				location: location,
-				hourStart: start,
-				hourEnd: end,
+				startDate: start,
+				endDate: end,
 				url: url
 			});
 
@@ -110,9 +115,9 @@ Timetable.Renderer = function(tt) {
 			function appendTimetableAside(container) {
 				var asideNode = container.appendChild(document.createElement('aside'));
 				var asideULNode = asideNode.appendChild(document.createElement('ul'));
-				appendLocationRows(asideULNode);
+				appendRowHeaders(asideULNode);
 			}
-			function appendLocationRows(ulNode) {
+			function appendRowHeaders(ulNode) {
 				for (var k=0; k<timetable.locations.length; k++) {
 					var liNode = ulNode.appendChild(document.createElement('li'));
 					var spanNode = liNode.appendChild(document.createElement('span'));
@@ -140,7 +145,6 @@ Timetable.Renderer = function(tt) {
 			var container = document.querySelector(selector);
 			checkContainerPrecondition(container);
 			emptyNode(container);
-
 			appendTimetableAside(container);
 			appendTimetableSection(container);
 		}
