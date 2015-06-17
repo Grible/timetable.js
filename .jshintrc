@@ -15,5 +15,17 @@
   "undef": true,
   "unused": true,
   "strict": true,
-  "jquery": true
+  "jquery": true,
+  "globals": {
+    "Timetable": false,
+    // MOCHA/CHAI
+    "describe": false,
+    "it": false,
+    "xit": false,
+    "before": false,
+    "beforeEach": false,
+    "after": false,
+    "afterEach": false,
+    "expect": false
+  }
 }
