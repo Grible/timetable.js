@@ -107,6 +107,27 @@ Timetable.Renderer = function(tt) {
 					throw new Error('Timetable container not found');
 				}
 			}
+			function appendTimetableAside(container) {
+				var asideNode = container.appendChild(document.createElement('aside'));
+				var asideULNode = asideNode.appendChild(document.createElement('ul'));
+				appendLocationRows(asideULNode);
+			}
+			function appendLocationRows(ulNode) {
+				for (var k=0; k<timetable.locations.length; k++) {
+					var liNode = ulNode.appendChild(document.createElement('li'));
+					var spanNode = liNode.appendChild(document.createElement('span'));
+					spanNode.className = 'row-heading';
+					spanNode.textContent = timetable.locations[k];
+				}
+			}
+			function appendTimetableSection(container) {
+				var sectionNode = container.appendChild(document.createElement('section'));
+				var timeNode = sectionNode.appendChild(document.createElement('time'));
+				var headerNode = timeNode.appendChild(document.createElement('header'));
+				var sectionULNode = headerNode.appendChild(document.createElement('ul'));
+
+				appendTimeLabels(sectionULNode);
+			}
 			function appendTimeLabels(ulNode) {
 				for (var hour=timetable.scope.hourStart; hour <= timetable.scope.hourEnd; hour++) {
 					var liNode = ulNode.appendChild(document.createElement('li'));
@@ -120,22 +141,8 @@ Timetable.Renderer = function(tt) {
 			checkContainerPrecondition(container);
 			emptyNode(container);
 
-			var sectionNode = container.appendChild(document.createElement('section'));
-			var timeNode = sectionNode.appendChild(document.createElement('time'));
-			var headerNode = timeNode.appendChild(document.createElement('header'));
-			var sectionULNode = headerNode.appendChild(document.createElement('ul'));
-
-			appendTimeLabels(sectionULNode);
-
-			var asideNode = container.appendChild(document.createElement('aside'));
-			var asideULNode = asideNode.appendChild(document.createElement('ul'));
-
-			for (var k=0; k<timetable.locations.length; k++) {
-				var liNode = asideULNode.appendChild(document.createElement('li'));
-				var spanNode = liNode.appendChild(document.createElement('span'));
-				spanNode.className = 'row-heading';
-				spanNode.textContent = timetable.locations[k];
-			}
+			appendTimetableAside(container);
+			appendTimetableSection(container);
 		}
 	};
 
