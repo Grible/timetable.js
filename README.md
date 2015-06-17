@@ -8,7 +8,7 @@ Install with bower, or alternatively download the ZIP:
 bower install timetable
 ```
 
-Load the plugin and styles in your HTML (styles in the HTML HEAD preferably):
+Load the plugin and styles in your HTML from the `dist` folder:
 ```html
 <link rel="stylesheet" href="timetablejs.css">
 
