@@ -14,9 +14,10 @@
     "url": "https://github.com/Grible/timetable.js"
   },
   "private": false,
-  "main": ["dist/scripts/timetable.min.js", "dist/styles/timetablejs.css"],
+  "main": [
+    "dist/scripts/timetable.min.js",
+    "dist/styles/timetablejs.css"
+  ],
   "dependencies": {},
-  "devDependencies": {
-    "bourbon": "~4.2.3"
-  }
+  "devDependencies": {}
 }
