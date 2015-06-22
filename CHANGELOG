@@ -1,0 +1,5 @@
+0.2.0
+- removed dependency on bourbon, thereby now free of sass/css dependencies, easier for including sass in other projects
+
+0.1.0
+- first operative version
