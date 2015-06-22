@@ -1,8 +1,6 @@
 // bower:scss
 // endbower
 
-@import bourbon/app/assets/stylesheets/bourbon
-
 /* ==========================================================================
  * Default settings
  * ==========================================================================
@@ -33,10 +31,26 @@ $timetable-entry-padding: 10px
 =valign-middle
 	position: relative
 	top: 50%
-	+transform(translateY(-50%))
+	transform: translateY(-50%)
 
 =valign-parent
-	+transform-style(preserve-3d)
+	transform-style: preserve-3d
+
+=clearfix
+	&::after
+		clear: both
+		content: ""
+		display: table
+
+=ellipsis($width: 100%)
+	display: inline-block
+	max-width: $width
+	overflow: hidden
+	text-overflow: ellipsis
+	white-space: nowrap
+	word-wrap: normal
+
+
 
 /* ==========================================================================
  * Timetable
@@ -92,7 +106,7 @@ $timetable-entry-padding: 10px
 
 		header
 			height: $timetable-hour-row-height
-			+transform-style(preserve-3d)
+			transform-style: preserve-3d
 			+clearfix
 			font-size: 0
 			li
@@ -111,9 +125,9 @@ $timetable-entry-padding: 10px
 					position: absolute
 					left: 0
 				&:not(:first-of-type) .time-label
-					+transform(translateX(-50%))
+					transform: translateX(-50%)
 				&:last-of-type .time-label
-					+transform(translateX(-100%))
+					transform: translateX(-100%)
 
 	@media #{$timetable-breakpoint}
 		aside

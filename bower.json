@@ -1,6 +1,6 @@
 {
   "name": "timetable.js",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Vanilla javascript plugin for building nice responsive timetables",
   "keywords": [
     "timetable",
@@ -14,9 +14,10 @@
     "url": "https://github.com/Grible/timetable.js"
   },
   "private": false,
-  "main": ["dist/scripts/timetable.min.js", "dist/styles/timetablejs.css"],
+  "main": [
+    "dist/scripts/timetable.min.js",
+    "dist/styles/timetablejs.css"
+  ],
   "dependencies": {},
-  "devDependencies": {
-    "bourbon": "~4.2.3"
-  }
+  "devDependencies": {}
 }
