@@ -23,7 +23,7 @@ Add a timetable placeholder:
 Make a timetable object, optionally set the scope in hours (the visible hours in the timetable):
 ```javascript
 var timetable = new Timetable();
-timetable.setScope(9, 17); // optional, only whole hours
+timetable.setScope(9, 17); // optional, only whole hours between 0 and 23
 ```
 Add some locations:
 ```javascript
