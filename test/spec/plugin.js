@@ -11,14 +11,15 @@
       expect(this.timetable.scope).to.deep.equal({hourStart: 9, hourEnd: 17});
     });
 
-    it('should allow to set its scope between 0 and 24 hours', function () {
-      var errorMsg = 'Timetable scope should consist of (start, end) in whole hours between 0 and 24';
+    it('should allow to set its scope in hours with maximum 24 hours span', function () {
+      var errorMsg = 'Timetable scope should consist of (start, end) in whole hours from 0 to 23';
       var tt = this.timetable;
-      expect(tt.setScope(0, 24).scope).to.deep.equal({hourStart: 0, hourEnd: 24});
       expect(tt.setScope(1, 20).scope).to.deep.equal({hourStart: 1, hourEnd: 20});
-      expect(function(){tt.setScope(1, 25);}).to.throw(RangeError, errorMsg);
+      expect(tt.setScope(0, 0).scope).to.deep.equal({hourStart: 0, hourEnd: 0});
+      expect(function(){tt.setScope(1, 24);}).to.throw(RangeError, errorMsg);
       expect(function(){tt.setScope(-1, 1);}).to.throw(RangeError, errorMsg);
-      expect(function(){tt.setScope(1, 0);}).to.throw(RangeError, errorMsg);
+      expect(function(){tt.setScope(1, 0);}).not.to.throw(RangeError, errorMsg);
+      expect(function(){tt.setScope(3, 1);}).not.to.throw(RangeError, errorMsg);
       expect(function(){tt.setScope(20);}).to.throw(RangeError, errorMsg);
       expect(function(){tt.setScope(undefined);}).to.throw(RangeError, errorMsg);
     });

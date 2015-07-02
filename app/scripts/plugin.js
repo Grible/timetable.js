@@ -20,7 +20,7 @@ Timetable.Renderer = function(tt) {
 
 (function() {
 	function isValidHourRange(start, end) {
-		return isValidHour(start) && isValidHour(end) && start < end;
+		return isValidHour(start) && isValidHour(end);
 	}
 	function isValidHour(number) {
 		return isInt(number) && isInHourRange(number);
@@ -29,7 +29,7 @@ Timetable.Renderer = function(tt) {
 		return number === parseInt(number, 10);
 	}
 	function isInHourRange(number) {
-		return number >= 0 && number <= 24;
+		return number >= 0 && number < 24;
 	}
 	function locationExistsIn(loc, locs) {
 		return locs.indexOf(loc) !== -1;
@@ -46,7 +46,7 @@ Timetable.Renderer = function(tt) {
 				this.scope.hourStart = start;
 				this.scope.hourEnd = end;
 			} else {
-				throw new RangeError('Timetable scope should consist of (start, end) in whole hours between 0 and 24');
+				throw new RangeError('Timetable scope should consist of (start, end) in whole hours from 0 to 23');
 			}
 
 			return this;
@@ -106,6 +106,7 @@ Timetable.Renderer = function(tt) {
 	Timetable.Renderer.prototype = {
 		draw: function(selector) {
 			var timetable = this.timetable;
+			var scopeDurationHours = timetable.scope.hourEnd > timetable.scope.hourStart ? timetable.scope.hourEnd - timetable.scope.hourStart : 24 + timetable.scope.hourEnd - timetable.scope.hourStart;
 
 			function checkContainerPrecondition(container) {
 				if (container === null) {
@@ -134,11 +135,23 @@ Timetable.Renderer = function(tt) {
 			function appendColumnHeaders(node) {
 				var headerNode = node.appendChild(document.createElement('header'));
 				var headerULNode = headerNode.appendChild(document.createElement('ul'));
-				for (var hour=timetable.scope.hourStart; hour <= timetable.scope.hourEnd; hour++) {
+
+				var completed = false;
+				var looped = false;
+
+				for (var hour=timetable.scope.hourStart; !completed;) {
 					var liNode = headerULNode.appendChild(document.createElement('li'));
 					var spanNode = liNode.appendChild(document.createElement('span'));
 					spanNode.className = 'time-label';
 					spanNode.textContent = prettyFormatHour(hour);
+
+					if (hour === timetable.scope.hourEnd && (timetable.scope.hourStart !== timetable.scope.hourEnd || looped)) {
+						completed = true;
+					}
+					if (++hour === 24) {
+						hour = 0;
+						looped = true;
+					}
 				}
 			}
 			function appendTimeRows(node) {
@@ -146,7 +159,7 @@ Timetable.Renderer = function(tt) {
 				ulNode.className = 'room-timeline';
 				for (var k=0; k<timetable.locations.length; k++) {
 					var liNode = ulNode.appendChild(document.createElement('li'));
-					appendLocationEvents(timetable.locations[k], liNode);
+					appendLocationEvents(timetable.locations[k], liNode);/**/
 				}
 			}
 			function appendLocationEvents(location, node) {
@@ -166,8 +179,6 @@ Timetable.Renderer = function(tt) {
 				aNode.style.width = computeEventBlockWidth(event);
 				aNode.style.left = computeEventBlockOffset(event);
 				smallNode.textContent = event.name;
-
-				// <a class="time-entry" title="Zumba" href="#" style="width: 7.1428%; left: 7.1428%"><small>Zumba</small></a>
 			}
 			function computeEventBlockWidth(event) {
 				var start = event.startDate;
@@ -175,13 +186,11 @@ Timetable.Renderer = function(tt) {
 				var durationHours = end.getHours() - start.getHours();
 				var minuteDiff = end.getMinutes() - start.getMinutes();
 				durationHours += minuteDiff / 60;
-				var scopeDurationHours = timetable.scope.hourEnd - timetable.scope.hourStart;
 				return durationHours / scopeDurationHours * 100 + '%';
 			}
 			function computeEventBlockOffset(event) {
 				var start = event.startDate;
 				var startHours = start.getHours() + (start.getMinutes() / 60);
-				var scopeDurationHours = timetable.scope.hourEnd - timetable.scope.hourStart;
 				return (startHours - timetable.scope.hourStart) / scopeDurationHours * 100 + '%';
 			}
 
