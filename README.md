@@ -31,7 +31,7 @@ timetable.addLocations(['Rotterdam', 'Madrid', 'London', 'New York']);
 ```
 Add your events using `addEvent(name, location, startDate, endDate, url)`:
 ```javascript
-timetable.addEvent('Sightseeing', 'Rotterdam', new Date(2015,7,17,10,45), new Date(2015,7,17,12,30), 'http://www.github.com');
+timetable.addEvent('Sightseeing', 'Rotterdam', new Date(2015,7,17,10,45), new Date(2015,7,17,12,30), 'http://www.github.com'); // url field is optional
 ```
 
 Last, render the thing in your previously created timetable placeholder:
