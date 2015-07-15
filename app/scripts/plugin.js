@@ -171,10 +171,14 @@ Timetable.Renderer = function(tt) {
 				}
 			}
 			function appendEvent(event, node) {
-				var aNode = node.appendChild(document.createElement('a'));
+				var hasURL = event.url;
+				var elementType = hasURL ? 'a' : 'span';
+				var aNode = node.appendChild(document.createElement(elementType));
 				var smallNode = aNode.appendChild(document.createElement('small'));
 				aNode.title = event.name;
-				aNode.href = event.url;
+				if (hasURL) {
+					aNode.href = event.url;
+				}
 				aNode.className = 'time-entry';
 				aNode.style.width = computeEventBlockWidth(event);
 				aNode.style.left = computeEventBlockOffset(event);
