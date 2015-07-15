@@ -1,3 +1,6 @@
+0.4.0
+- made event URLs optional to support non-clickable events
+
 0.3.0
 - added support for timetable scopes that span 2 days (e.g. from 23.00 to 4.00), for people that like night events. Maximum span is still 24 hours (e.g. from 8.00 to 8.00)
 
