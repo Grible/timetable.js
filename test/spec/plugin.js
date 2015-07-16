@@ -36,12 +36,13 @@
 
     it('should be possible to add events for an existing location using js dates', function () {
       var tt = this.timetable;
-      tt.addLocations(['loc1', 'loc2']);
+      tt.addLocations(['loc1', 'loc2', 'loc5']);
 
       expect(tt.addEvent('Zumba', 'loc2', new Date(2015,7,17,9), new Date(2015,7,17,17), '#').events[0]).to.deep.equal({name: 'Zumba', location: 'loc2', startDate: new Date(2015,7,17,9), endDate: new Date(2015,7,17,17), url: '#'});
       expect(tt.addEvent('DIY Fireworks', 'loc1', new Date(2015,7,17,10,30), new Date(2015,7,17,11,15), '#').events[1]).to.deep.equal({name: 'DIY Fireworks', location: 'loc1', startDate: new Date(2015,7,17,10,30), endDate: new Date(2015,7,17,11,15), url: '#'});
+      expect(tt.addEvent('DIY Fireworks', 'loc5', new Date(2015,7,17,20,30), new Date(2015,7,18,0,15)).events[2]).to.deep.equal({name: 'DIY Fireworks', location: 'loc5', startDate: new Date(2015,7,17,20,30), endDate: new Date(2015,7,18,0,15), url: undefined});
       expect(function(){tt.addEvent('DIY Fireworks', 'Area 51', new Date(2015,7,17,10), new Date(2015,7,17,11), '#');}).to.throw('Unknown location');
-      expect(function(){tt.addEvent('DIY Fireworks', 'loc2', new Date(2015,7,17,10), new Date(2015,7,17,25), '#');}).to.throw('Invalid time range');
+      expect(function(){tt.addEvent('DIY Fireworks', 'loc2', new Date(2015,7,17,10,1), new Date(2015,7,17,10), '#');}).to.throw('Invalid time range');
       expect(function(){tt.addEvent('DIY Fireworks', 'loc2', new Date(2015,7,17,10), new Date(2015,7,17,9), '#');}).to.throw('Invalid time range');
     });
 
