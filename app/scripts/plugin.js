@@ -36,7 +36,7 @@ Timetable.Renderer = function(tt) {
 	}
 	function isValidTimeRange(start, end) {
 		var correctTypes = start instanceof Date && end instanceof Date;
-		var correctOrder = start.getHours() < end.getHours() || (start.getHours() === end.getHours() && start.getMinutes() < end.getMinutes());
+		var correctOrder = start < end;
 		return correctTypes && correctOrder;
 	}
 
