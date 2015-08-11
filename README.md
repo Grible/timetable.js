@@ -54,14 +54,15 @@ $timetable-grid-color: #E5E5E5 !default
 $timetable-grid: 1px solid $timetable-grid-color !default
 $timetable-row-header-padding: 15px !default
 $timetable-row-header-color: #EFEFEF !default
-$timetable-row-separator: 1px solid white !default
+$timetable-legend-row-separator: 1px solid white !default
+$timetable-entry-row-separator: none !default
 $timetable-row-header-gap: 5px solid transparent !default
-$timetable-row-uneven-color: #FDFDFD
-$timetable-row-even-color: #F4F4F4
+$timetable-row-uneven-color: #FDFDFD !default
+$timetable-row-even-color: #F4F4F4 !default
 $timetable-entry-color: #EC6A5E !default
 $timetable-entry-color-hover: darken($timetable-entry-color, 10%) !default
 $timetable-entry-border: 1px solid darken($timetable-entry-color, 15%) !default
-$timetable-entry-padding: 10px
+$timetable-entry-padding: 10px !default
 ```
 
 Alternatively you could override the css styles manually.
