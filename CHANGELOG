@@ -1,3 +1,8 @@
+0.5.0
+- possibility to add a row seperation border with sass
+- readme updates
+- some bugfixes
+
 0.4.0
 - made event URLs optional to support non-clickable events
 
