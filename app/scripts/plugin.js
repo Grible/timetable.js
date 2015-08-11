@@ -105,9 +105,9 @@ Timetable.Renderer = function(tt) {
 
 	Timetable.Renderer.prototype = {
 		draw: function(selector) {
-			var timetable = this.timetable;
-			var scopeDurationHours = timetable.scope.hourEnd > timetable.scope.hourStart ? timetable.scope.hourEnd - timetable.scope.hourStart : 24 + timetable.scope.hourEnd - timetable.scope.hourStart;
-
+			function getDurationHours(startHour, endHour) {
+				return endHour > startHour ? endHour - startHour : 24 + endHour - startHour;
+			}
 			function checkContainerPrecondition(container) {
 				if (container === null) {
 					throw new Error('Timetable container not found');
@@ -187,7 +187,7 @@ Timetable.Renderer = function(tt) {
 			function computeEventBlockWidth(event) {
 				var start = event.startDate;
 				var end = event.endDate;
-				var durationHours = end.getHours() - start.getHours();
+				var durationHours = getDurationHours(start.getHours(), end.getHours());
 				var minuteDiff = end.getMinutes() - start.getMinutes();
 				durationHours += minuteDiff / 60;
 				return durationHours / scopeDurationHours * 100 + '%';
@@ -198,6 +198,8 @@ Timetable.Renderer = function(tt) {
 				return (startHours - timetable.scope.hourStart) / scopeDurationHours * 100 + '%';
 			}
 
+			var timetable = this.timetable;
+			var scopeDurationHours = getDurationHours(timetable.scope.hourStart, timetable.scope.hourEnd);
 			var container = document.querySelector(selector);
 			checkContainerPrecondition(container);
 			emptyNode(container);
