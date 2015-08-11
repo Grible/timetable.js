@@ -1,8 +1,8 @@
 # Timetable.js
-Vanilla javascript plugin for building nice responsive timetables. Provides a simple javascript interface to add events and locations which can be rendered to nice html. Works on mobile devices as well. Check the **[DEMO](http://timetablejs.grible.co)**.
+Vanilla javascript plugin for building nice responsive timetables. Provides a simple javascript interface to add events and locations which can be rendered to nice HTML. Works on mobile devices as well. Check the **demo** at [http://timetablejs.org](http://timetablejs.org).
 
 ## Installation
-Install with bower, or alternatively download the ZIP:
+Install with bower, or alternatively download the [ZIP](https://github.com/Grible/timetable.js/archive/master.zip):
 
 ```
 bower install timetable
