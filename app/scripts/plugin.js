@@ -105,7 +105,7 @@ Timetable.Renderer = function(tt) {
 
 	Timetable.Renderer.prototype = {
 		draw: function(selector) {
-			function getDurationHours(startHour, endHour) {
+			function getScopeDurationHours(startHour, endHour) {
 				return endHour > startHour ? endHour - startHour : 24 + endHour - startHour;
 			}
 			function checkContainerPrecondition(container) {
@@ -187,10 +187,11 @@ Timetable.Renderer = function(tt) {
 			function computeEventBlockWidth(event) {
 				var start = event.startDate;
 				var end = event.endDate;
-				var durationHours = getDurationHours(start.getHours(), end.getHours());
-				var minuteDiff = end.getMinutes() - start.getMinutes();
-				durationHours += minuteDiff / 60;
+				var durationHours = computeDurationInHours(start, end);
 				return durationHours / scopeDurationHours * 100 + '%';
+			}
+			function computeDurationInHours(start, end) {
+				return (end.getTime() - start.getTime()) / 1000 / 60 / 60;
 			}
 			function computeEventBlockOffset(event) {
 				var start = event.startDate;
@@ -199,7 +200,7 @@ Timetable.Renderer = function(tt) {
 			}
 
 			var timetable = this.timetable;
-			var scopeDurationHours = getDurationHours(timetable.scope.hourStart, timetable.scope.hourEnd);
+			var scopeDurationHours = getScopeDurationHours(timetable.scope.hourStart, timetable.scope.hourEnd);
 			var container = document.querySelector(selector);
 			checkContainerPrecondition(container);
 			emptyNode(container);
