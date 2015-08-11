@@ -1,8 +1,8 @@
 # Timetable.js
-Vanilla javascript plugin for building nice responsive timetables. Provides a simple javascript interface to add events and locations which can be rendered to nice html. Works on mobile devices as well. Check the **[DEMO](http://timetablejs.grible.co)**.
+Vanilla javascript plugin for building nice responsive timetables. Provides a simple javascript interface to add events and locations which can be rendered to nice HTML. Works on mobile devices as well. Check the **demo** at [http://timetablejs.org](http://timetablejs.org).
 
 ## Installation
-Install with bower, or alternatively download the ZIP:
+Install with bower, or alternatively download the [ZIP](https://github.com/Grible/timetable.js/archive/master.zip):
 
 ```
 bower install timetable
@@ -27,17 +27,17 @@ timetable.setScope(9, 17); // optional, only whole hours between 0 and 23
 ```
 Add some locations:
 ```javascript
-timetable.addLocations(['Rotterdam', 'Madrid', 'London', 'New York']);
+timetable.addLocations(['Silent Disco', 'Nile', 'Len Room', 'Maas Room']);
 ```
-Add your events using `addEvent(name, location, startDate, endDate, url)`:
+Add your events using `addEvent(name, location, startDate, endDate[, url])`:
 ```javascript
-timetable.addEvent('Sightseeing', 'Rotterdam', new Date(2015,7,17,10,45), new Date(2015,7,17,12,30), 'http://www.github.com'); // url field is optional
+timetable.addEvent('Frankadelic', 'Nile', new Date(2015,7,17,10,45), new Date(2015,7,17,12,30));
 ```
 
 Last, render the thing in your previously created timetable placeholder:
 ```javascript
 var renderer = new Timetable.Renderer(timetable);
-renderer.draw('.timetable'); // can be any css selector
+renderer.draw('.timetable'); // any css selector
 ```
 That's it!
 

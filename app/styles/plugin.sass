@@ -15,14 +15,15 @@ $timetable-grid-color: #E5E5E5 !default
 $timetable-grid: 1px solid $timetable-grid-color !default
 $timetable-row-header-padding: 15px !default
 $timetable-row-header-color: #EFEFEF !default
-$timetable-row-separator: 1px solid white !default
+$timetable-legend-row-separator: 1px solid white !default
+$timetable-entry-row-separator: none !default
 $timetable-row-header-gap: 5px solid transparent !default
-$timetable-row-uneven-color: #FDFDFD
-$timetable-row-even-color: #F4F4F4
+$timetable-row-uneven-color: #FDFDFD !default
+$timetable-row-even-color: #F4F4F4 !default
 $timetable-entry-color: #EC6A5E !default
 $timetable-entry-color-hover: darken($timetable-entry-color, 10%) !default
 $timetable-entry-border: 1px solid darken($timetable-entry-color, 15%) !default
-$timetable-entry-padding: 10px
+$timetable-entry-padding: 10px !default
 
 /* ==========================================================================
  * Mixins
@@ -82,7 +83,7 @@ $timetable-entry-padding: 10px
 			line-height: $timetable-hour-row-height
 
 			&:not(:last-of-type)
-				border-bottom: $timetable-row-separator
+				border-bottom: $timetable-legend-row-separator
 
 		.row-heading
 			+ellipsis
@@ -140,22 +141,6 @@ $timetable-entry-padding: 10px
 		position: relative
 		overflow: hidden
 
-		&:after, &:before
-			content: ""
-			position: absolute
-			z-index: 1
-			left: 0
-			top: 0
-			right: 0
-			bottom: 0
-		&:before
-			background-image: linear-gradient(to right, $timetable-grid-color 1px, transparent 1px)
-			background-size: $timetable-hour-column-width / 4 auto
-		&:after
-			background-image: linear-gradient(to right, $timetable-grid-color, $timetable-grid-color 1px, $timetable-row-even-color 1px, $timetable-row-even-color 2px, $timetable-grid-color 2px, $timetable-grid-color 3px, transparent 3px, transparent)
-			background-size: $timetable-hour-column-width auto
-			background-position: -2px 0
-
 		li
 			position: relative
 			background-color: $timetable-row-even-color
@@ -165,7 +150,26 @@ $timetable-entry-padding: 10px
 				border-top: $timetable-grid
 			&:last-of-type
 				border-bottom: $timetable-grid
+			&:not(:last-of-type)
+				border-bottom: $timetable-entry-row-separator
+			&:first-child .time-entry
+				height: $timetable-hour-row-height - 2px
 
+			&:after, &:before
+				content: ""
+				position: absolute
+				z-index: 1
+				left: 0
+				top: 0
+				right: 0
+				bottom: 0
+			&:before
+				background-image: linear-gradient(to right, $timetable-grid-color 1px, transparent 1px)
+				background-size: $timetable-hour-column-width / 4 auto
+			&:after
+				background-image: linear-gradient(to right, $timetable-grid-color, $timetable-grid-color 1px, $timetable-row-even-color 1px, $timetable-row-even-color 2px, $timetable-grid-color 2px, $timetable-grid-color 3px, transparent 3px, transparent)
+				background-size: $timetable-hour-column-width auto
+				background-position: -2px 0
 	.time-entry
 		background-color: $timetable-entry-color
 		transition: 200ms background-color
