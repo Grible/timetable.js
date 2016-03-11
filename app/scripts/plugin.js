@@ -72,7 +72,7 @@ Timetable.Renderer = function(tt) {
 
 			return this;
 		},
-		addEvent: function(name, location, start, end, url) {
+		addEvent: function(name, location, start, end, obj) {
 			if (!locationExistsIn(location, this.locations)) {
 				throw new Error('Unknown location');
 			}
@@ -85,7 +85,7 @@ Timetable.Renderer = function(tt) {
 				location: location,
 				startDate: start,
 				endDate: end,
-				url: url
+				obj: obj
 			});
 
 			return this;
@@ -171,15 +171,29 @@ Timetable.Renderer = function(tt) {
 				}
 			}
 			function appendEvent(event, node) {
-				var hasURL = event.url;
-				var elementType = hasURL ? 'a' : 'span';
+				var hasURL = (typeof event.obj === "string");
+				var hasObj = (typeof event.obj === "object");
+				var hasObjUrl = (hasObj ? event.obj.href : false);
+				var elementType = (hasURL | hasObjUrl ? 'a' : 'span');
 				var aNode = node.appendChild(document.createElement(elementType));
 				var smallNode = aNode.appendChild(document.createElement('small'));
 				aNode.title = event.name;
 				if (hasURL) {
-					aNode.href = event.url;
+					aNode.href = event.obj;
 				}
-				aNode.className = 'time-entry';
+				if (hasObj) {
+					for (var attr in event.obj) {
+						if (attr === 'data') {
+							for (var key in event.obj.data) {
+								aNode.setAttribute('data-'+key, event.obj.data[key]);
+							}
+						}
+						else {
+							aNode.setAttribute(attr, event.obj[attr]);
+						}
+					}
+				}
+				aNode.className += ' time-entry';
 				aNode.style.width = computeEventBlockWidth(event);
 				aNode.style.left = computeEventBlockOffset(event);
 				smallNode.textContent = event.name;
@@ -210,4 +224,3 @@ Timetable.Renderer = function(tt) {
 	};
 
 })();
-
