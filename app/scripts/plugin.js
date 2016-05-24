@@ -196,6 +196,9 @@ Timetable.Renderer = function(tt) {
 			function computeEventBlockOffset(event) {
 				var start = event.startDate;
 				var startHours = start.getHours() + (start.getMinutes() / 60);
+                                if (startHours < timetable.scope.hourStart) {
+                                  startHours += 24; // Show Events on the same Night
+                                }
 				return (startHours - timetable.scope.hourStart) / scopeDurationHours * 100 + '%';
 			}
 
