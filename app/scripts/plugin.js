@@ -39,6 +39,9 @@ Timetable.Renderer = function(tt) {
 		var correctOrder = start < end;
 		return correctTypes && correctOrder;
 	}
+	function getDurationHours(startHour, endHour) {
+		return endHour > startHour ? endHour - startHour : 24 + endHour - startHour;
+	}
 
 	Timetable.prototype = {
 		setScope: function(start, end) {
@@ -72,7 +75,7 @@ Timetable.Renderer = function(tt) {
 
 			return this;
 		},
-		addEvent: function(name, location, start, end, url) {
+		addEvent: function(name, location, start, end, options) {
 			if (!locationExistsIn(location, this.locations)) {
 				throw new Error('Unknown location');
 			}
@@ -80,12 +83,14 @@ Timetable.Renderer = function(tt) {
 				throw new Error('Invalid time range: ' + JSON.stringify([start, end]));
 			}
 
+			var optionsHasValidType = Object.prototype.toString.call(options) === '[object Object]';
+
 			this.events.push({
 				name: name,
 				location: location,
 				startDate: start,
 				endDate: end,
-				url: url
+				options: optionsHasValidType ? options : undefined
 			});
 
 			return this;
@@ -105,9 +110,6 @@ Timetable.Renderer = function(tt) {
 
 	Timetable.Renderer.prototype = {
 		draw: function(selector) {
-			function getScopeDurationHours(startHour, endHour) {
-				return endHour > startHour ? endHour - startHour : 24 + endHour - startHour;
-			}
 			function checkContainerPrecondition(container) {
 				if (container === null) {
 					throw new Error('Timetable container not found');
@@ -171,15 +173,30 @@ Timetable.Renderer = function(tt) {
 				}
 			}
 			function appendEvent(event, node) {
-				var hasURL = event.url;
+				var hasOptions = event.options !== undefined;
+				var hasURL, hasAdditionalClass, hasDataAttributes = false;
+
+				if(hasOptions) {
+					hasURL = (event.options.url !== undefined) ? true : false;
+					hasAdditionalClass = (event.options.class !== undefined) ? true : false;
+					hasDataAttributes = (event.options.data !== undefined) ? true : false;
+				}
+
 				var elementType = hasURL ? 'a' : 'span';
 				var aNode = node.appendChild(document.createElement(elementType));
 				var smallNode = aNode.appendChild(document.createElement('small'));
 				aNode.title = event.name;
+
 				if (hasURL) {
-					aNode.href = event.url;
+					aNode.href = event.options.url;
 				}
-				aNode.className = 'time-entry';
+				if(hasDataAttributes){
+					for (var key in event.options.data) {
+						aNode.setAttribute('data-'+key, event.options.data[key]);
+					}
+				}
+
+				aNode.className = hasAdditionalClass ? 'time-entry ' + event.options.class : 'time-entry';
 				aNode.style.width = computeEventBlockWidth(event);
 				aNode.style.left = computeEventBlockOffset(event);
 				smallNode.textContent = event.name;
@@ -194,13 +211,14 @@ Timetable.Renderer = function(tt) {
 				return (end.getTime() - start.getTime()) / 1000 / 60 / 60;
 			}
 			function computeEventBlockOffset(event) {
-				var start = event.startDate;
-				var startHours = start.getHours() + (start.getMinutes() / 60);
-				return (startHours - timetable.scope.hourStart) / scopeDurationHours * 100 + '%';
+				var scopeStartHours = timetable.scope.hourStart;
+				var eventStartHours = event.startDate.getHours() + (event.startDate.getMinutes() / 60);
+				var hoursBeforeEvent =  getDurationHours(scopeStartHours, eventStartHours);
+				return hoursBeforeEvent / scopeDurationHours * 100 + '%';
 			}
 
 			var timetable = this.timetable;
-			var scopeDurationHours = getScopeDurationHours(timetable.scope.hourStart, timetable.scope.hourEnd);
+			var scopeDurationHours = getDurationHours(timetable.scope.hourStart, timetable.scope.hourEnd);
 			var container = document.querySelector(selector);
 			checkContainerPrecondition(container);
 			emptyNode(container);
@@ -210,4 +228,3 @@ Timetable.Renderer = function(tt) {
 	};
 
 })();
-

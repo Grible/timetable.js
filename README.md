@@ -1,5 +1,8 @@
 # Timetable.js
-Vanilla javascript plugin for building nice responsive timetables. Provides a simple javascript interface to add events and locations which can be rendered to nice HTML. Works on mobile devices as well. Check the **demo** at [http://timetablejs.org](http://timetablejs.org).
+Vanilla javascript plugin for building nice responsive timetables. Provides a simple javascript interface to add events and locations which can be rendered to nice HTML. Works on mobile devices as well.
+
+## Just show me the demo
+Okay: [**demo**](http://timetablejs.grible.co). Also, have a look at the website: [http://timetablejs.org](http://timetablejs.org).
 
 ## Installation
 Install with bower, or alternatively download the [ZIP](https://github.com/Grible/timetable.js/archive/master.zip):
@@ -29,10 +32,23 @@ Add some locations:
 ```javascript
 timetable.addLocations(['Silent Disco', 'Nile', 'Len Room', 'Maas Room']);
 ```
-Add your events using `addEvent(name, location, startDate, endDate[, url])`:
+Add your events using `addEvent(name, location, startDate, endDate[, options])`:
 ```javascript
 timetable.addEvent('Frankadelic', 'Nile', new Date(2015,7,17,10,45), new Date(2015,7,17,12,30));
 ```
+
+In addition, you can pass options such as URLs, classes, or data-* attributes through an object:
+```javascript
+var options = {
+  url: '#',
+  class: 'vip',
+  data: {
+    id: 4,
+    ticketType: 'VIP'
+  }
+}
+timetable.addEvent('Jam Session', 'Nile', new Date(2015,7,17,21,15), new Date(2015,7,17,23,30), options);
+ ```
 
 Last, render the thing in your previously created timetable placeholder:
 ```javascript
