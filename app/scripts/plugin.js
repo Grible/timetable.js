@@ -174,9 +174,14 @@ Timetable.Renderer = function(tt) {
 			}
 			function appendEvent(event, node) {
 				var hasOptions = event.options !== undefined;
-				var hasURL = hasOptions ? event.options.url : false;
-				var hasAdditionalClass = hasOptions ? event.options.class : false;
-				var hasDataAttributes = hasOptions ? event.options.data : false;
+				var hasURL, hasAdditionalClass, hasDataAttributes = false;
+
+				if(hasOptions) {
+					hasURL = (event.options.url !== undefined) ? true : false;
+					hasAdditionalClass = (event.options.class !== undefined) ? true : false;
+					hasDataAttributes = (event.options.data !== undefined) ? true : false;
+				}
+
 				var elementType = hasURL ? 'a' : 'span';
 				var aNode = node.appendChild(document.createElement(elementType));
 				var smallNode = aNode.appendChild(document.createElement('small'));
@@ -185,7 +190,6 @@ Timetable.Renderer = function(tt) {
 				if (hasURL) {
 					aNode.href = event.options.url;
 				}
-
 				if(hasDataAttributes){
 					for (var key in event.options.data) {
 						aNode.setAttribute('data-'+key, event.options.data[key]);
