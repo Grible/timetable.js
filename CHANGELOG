@@ -1,3 +1,7 @@
+0.6.0
+- added support for adding event options such as URLs, classes, and data attributes
+- a few bug fixes
+
 0.5.0
 - possibility to add a row seperation border with sass
 - readme updates
