@@ -32,10 +32,23 @@ Add some locations:
 ```javascript
 timetable.addLocations(['Silent Disco', 'Nile', 'Len Room', 'Maas Room']);
 ```
-Add your events using `addEvent(name, location, startDate, endDate[, url])`:
+Add your events using `addEvent(name, location, startDate, endDate[, options])`:
 ```javascript
 timetable.addEvent('Frankadelic', 'Nile', new Date(2015,7,17,10,45), new Date(2015,7,17,12,30));
 ```
+
+In addition, you can pass options such as URLs, classes, or data-* attributes through an object:
+```javascript
+var options = {
+  url: '#',
+  class: 'vip',
+  data: {
+    id: 4,
+    ticketType: 'VIP'
+  }
+}
+timetable.addEvent('Jam Session', 'Nile', new Date(2015,7,17,21,15), new Date(2015,7,17,23,30), options);
+ ```
 
 Last, render the thing in your previously created timetable placeholder:
 ```javascript
