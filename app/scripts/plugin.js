@@ -75,7 +75,7 @@ Timetable.Renderer = function(tt) {
 
 			return this;
 		},
-		addEvent: function(name, location, start, end, url) {
+		addEvent: function(name, location, start, end, options) {
 			if (!locationExistsIn(location, this.locations)) {
 				throw new Error('Unknown location');
 			}
@@ -83,12 +83,14 @@ Timetable.Renderer = function(tt) {
 				throw new Error('Invalid time range: ' + JSON.stringify([start, end]));
 			}
 
+			var optionsHasValidType = Object.prototype.toString.call(options) === '[object Object]';
+
 			this.events.push({
 				name: name,
 				location: location,
 				startDate: start,
 				endDate: end,
-				url: url
+				options: optionsHasValidType ? options : undefined
 			});
 
 			return this;
@@ -171,15 +173,26 @@ Timetable.Renderer = function(tt) {
 				}
 			}
 			function appendEvent(event, node) {
-				var hasURL = event.url;
+				var hasOptions = event.options !== undefined;
+				var hasURL = hasOptions ? event.options.url : false;
+				var hasAdditionalClass = hasOptions ? event.options.class : false;
+				var hasDataAttributes = hasOptions ? event.options.data : false;
 				var elementType = hasURL ? 'a' : 'span';
 				var aNode = node.appendChild(document.createElement(elementType));
 				var smallNode = aNode.appendChild(document.createElement('small'));
 				aNode.title = event.name;
+
 				if (hasURL) {
-					aNode.href = event.url;
+					aNode.href = event.options.url;
 				}
-				aNode.className = 'time-entry';
+
+				if(hasDataAttributes){
+					for (var key in event.options.data) {
+						aNode.setAttribute('data-'+key, event.options.data[key]);
+					}
+				}
+
+				aNode.className = hasAdditionalClass ? 'time-entry ' + event.options.class : 'time-entry';
 				aNode.style.width = computeEventBlockWidth(event);
 				aNode.style.left = computeEventBlockOffset(event);
 				smallNode.textContent = event.name;

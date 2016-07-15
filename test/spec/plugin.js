@@ -38,12 +38,39 @@
       var tt = this.timetable;
       tt.addLocations(['loc1', 'loc2', 'loc5']);
 
-      expect(tt.addEvent('Zumba', 'loc2', new Date(2015,7,17,9), new Date(2015,7,17,17), '#').events[0]).to.deep.equal({name: 'Zumba', location: 'loc2', startDate: new Date(2015,7,17,9), endDate: new Date(2015,7,17,17), url: '#'});
-      expect(tt.addEvent('DIY Fireworks', 'loc1', new Date(2015,7,17,10,30), new Date(2015,7,17,11,15), '#').events[1]).to.deep.equal({name: 'DIY Fireworks', location: 'loc1', startDate: new Date(2015,7,17,10,30), endDate: new Date(2015,7,17,11,15), url: '#'});
-      expect(tt.addEvent('DIY Fireworks', 'loc5', new Date(2015,7,17,20,30), new Date(2015,7,18,0,15)).events[2]).to.deep.equal({name: 'DIY Fireworks', location: 'loc5', startDate: new Date(2015,7,17,20,30), endDate: new Date(2015,7,18,0,15), url: undefined});
-      expect(function(){tt.addEvent('DIY Fireworks', 'Area 51', new Date(2015,7,17,10), new Date(2015,7,17,11), '#');}).to.throw('Unknown location');
-      expect(function(){tt.addEvent('DIY Fireworks', 'loc2', new Date(2015,7,17,10,1), new Date(2015,7,17,10), '#');}).to.throw('Invalid time range');
-      expect(function(){tt.addEvent('DIY Fireworks', 'loc2', new Date(2015,7,17,10), new Date(2015,7,17,9), '#');}).to.throw('Invalid time range');
+      var optionsWithURL = {
+        url: '#'
+      };
+
+      var optionsWithClass = {
+        class: 'vip-only'
+      };
+
+      var optionsWithURLAndClass = {
+        url: '#',
+        class: 'vip-only'
+      };
+
+      var optionsWithDataAttributes = {
+        url: '#',
+        data: {
+          maxPlayers: '12',
+          gameType: 'Muskets'
+        }
+      };
+
+      expect(tt.addEvent('Zumba', 'loc2', new Date(2015,7,17,9), new Date(2015,7,17,17), optionsWithURL).events[0]).to.deep.equal({name: 'Zumba', location: 'loc2', startDate: new Date(2015,7,17,9), endDate: new Date(2015,7,17,17), options: { url: '#' }});
+      expect(tt.addEvent('Private concert', 'loc1', new Date(2015,7,17,9), new Date(2015,7,17,17), optionsWithClass).events[1]).to.deep.equal({name: 'Private concert', location: 'loc1', startDate: new Date(2015,7,17,9), endDate: new Date(2015,7,17,17), options: { class: 'vip-only' }});
+      expect(tt.addEvent('DIY Fireworks', 'loc1', new Date(2015,7,17,10,30), new Date(2015,7,17,11,15), optionsWithURL).events[2]).to.deep.equal({name: 'DIY Fireworks', location: 'loc1', startDate: new Date(2015,7,17,10,30), endDate: new Date(2015,7,17,11,15), options: { url: '#' }});
+      expect(tt.addEvent('Afterparty', 'loc2', new Date(2015,7,17,22,30), new Date(2015,7,17,23,15), optionsWithURLAndClass).events[3]).to.deep.equal({name: 'Afterparty', location: 'loc2', startDate: new Date(2015,7,17,22,30), endDate: new Date(2015,7,17,23,15), options: { url: '#', class: 'vip-only' }});
+      expect(tt.addEvent('DIY Fireworks', 'loc5', new Date(2015,7,17,20,30), new Date(2015,7,18,0,15)).events[4]).to.deep.equal({name: 'DIY Fireworks', location: 'loc5', startDate: new Date(2015,7,17,20,30), endDate: new Date(2015,7,18,0,15), options: undefined});
+      expect(tt.addEvent('City Tour', 'loc1', new Date(2015,7,17,20,30), new Date(2015,7,18,0,15), 'some string').events[5]).to.deep.equal({name: 'City Tour', location: 'loc1', startDate: new Date(2015,7,17,20,30), endDate: new Date(2015,7,18,0,15), options: undefined});
+      expect(tt.addEvent('Pub Crawl', 'loc1', new Date(2015,7,17,21,30), new Date(2015,7,18,2,0), []).events[6]).to.deep.equal({name: 'Pub Crawl', location: 'loc1', startDate: new Date(2015,7,17,21,30), endDate: new Date(2015,7,18,2,0), options: undefined });
+      expect(tt.addEvent('Pub Crawl', 'loc1', new Date(2015,7,17,21,30), new Date(2015,7,18,2,0), optionsWithDataAttributes).events[7]).to.deep.equal({name: 'Pub Crawl', location: 'loc1', startDate: new Date(2015,7,17,21,30), endDate: new Date(2015,7,18,2,0), options: { url: '#', data: { maxPlayers: '12', gameType: 'Muskets' } } });
+      expect(function(){tt.addEvent('DIY Fireworks', 'Area 51', new Date(2015,7,17,10), new Date(2015,7,17,11), optionsWithURL);}).to.throw('Unknown location');
+      expect(function(){tt.addEvent('DIY Fireworks', 'loc2', new Date(2015,7,17,10,1), new Date(2015,7,17,10), optionsWithURL);}).to.throw('Invalid time range');
+      expect(function(){tt.addEvent('DIY Fireworks', 'loc2', new Date(2015,7,17,10), new Date(2015,7,17,9), optionsWithURL);}).to.throw('Invalid time range');
+
     });
 
   });
