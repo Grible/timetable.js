@@ -40,7 +40,7 @@ Timetable.Renderer = function(tt) {
 		return correctTypes && correctOrder;
 	}
 	function getDurationHours(startHour, endHour) {
-		return endHour > startHour ? endHour - startHour : 24 + endHour - startHour;
+		return endHour >= startHour ? endHour - startHour : 24 + endHour - startHour;
 	}
 
 	Timetable.prototype = {
