@@ -32,7 +32,12 @@ Timetable.Renderer = function(tt) {
 		return number >= 0 && number < 25;
 	}
 	function locationExistsIn(loc, locs) {
-		return locs.indexOf(loc) !== -1;
+		for (var k=0; k<locs.length; k++) {
+			if (loc === locs[k].id) {
+				return true;
+			}
+		}
+		return false;
 	}
 	function isValidTimeRange(start, end) {
 		var correctTypes = start instanceof Date && end instanceof Date;
@@ -56,7 +61,11 @@ Timetable.Renderer = function(tt) {
 		},
 		addLocations: function(newLocations) {
 			function hasProperFormat() {
-				return newLocations instanceof Array;
+				return newLocations instanceof Array && typeof newLocations[0] === "string";
+			}
+
+			function hasExtendFormat() {
+				return newLocations instanceof Array && newLocations[0] instanceof Object;
 			}
 
 			var existingLocations = this.locations;
@@ -64,12 +73,24 @@ Timetable.Renderer = function(tt) {
 			if (hasProperFormat()) {
 				newLocations.forEach(function(loc) {
 					if (!locationExistsIn(loc, existingLocations)) {
+						existingLocations.push({
+							id: loc,
+							title: loc
+						});
+					} else {
+						throw new Error('Location already exists');
+					}
+				});
+			} else if (hasExtendFormat()) {
+				newLocations.forEach(function(loc) {
+					if (!locationExistsIn(loc, existingLocations)) {
 						existingLocations.push(loc);
 					} else {
 						throw new Error('Location already exists');
 					}
 				});
-			} else {
+			}
+			else {
 				throw new Error('Tried to add locations in wrong format');
 			}
 
@@ -125,7 +146,7 @@ Timetable.Renderer = function(tt) {
 					var liNode = ulNode.appendChild(document.createElement('li'));
 					var spanNode = liNode.appendChild(document.createElement('span'));
 					spanNode.className = 'row-heading';
-					spanNode.textContent = timetable.locations[k];
+					spanNode.textContent = timetable.locations[k].title;
 				}
 			}
 			function appendTimetableSection(container) {
@@ -167,7 +188,7 @@ Timetable.Renderer = function(tt) {
 			function appendLocationEvents(location, node) {
 				for (var k=0; k<timetable.events.length; k++) {
 					var event = timetable.events[k];
-					if (event.location === location) {
+					if (event.location === location.id) {
 						appendEvent(event, node);
 					}
 				}
@@ -177,9 +198,9 @@ Timetable.Renderer = function(tt) {
 				var hasURL, hasAdditionalClass, hasDataAttributes = false;
 
 				if(hasOptions) {
-					hasURL = (event.options.url !== undefined) ? true : false;
-					hasAdditionalClass = (event.options.class !== undefined) ? true : false;
-					hasDataAttributes = (event.options.data !== undefined) ? true : false;
+					hasURL = event.options.url !== undefined;
+					hasAdditionalClass = event.options.class !== undefined;
+					hasDataAttributes = event.options.data !== undefined;
 				}
 
 				var elementType = hasURL ? 'a' : 'span';

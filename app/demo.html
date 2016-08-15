@@ -28,9 +28,19 @@
     <script>
       var timetable = new Timetable();
 
-      timetable.setScope(9,3)
+      timetable.setScope(9,3);
 
-      timetable.addLocations(['Rotterdam', 'Madrid', 'Los Angeles', 'London', 'New York', 'Jakarta', 'Tokyo']);
+      timetable.addLocations(['Rotterdam', 'Madrid']);
+
+      timetable.addLocations(
+              [
+                { id: 'Los Angeles', title: 'Los Angeles'},
+                { id: 'London', title: 'London'},
+                { id: 'New York', title: 'New York'},
+                { id: 'Jakarta', title: 'Jakarta'},
+                { id: 'Tokyo', title: 'Tokyo'}
+              ]
+      );
 
       timetable.addEvent('Sightseeing', 'Rotterdam', new Date(2015,7,17,9,00), new Date(2015,7,17,11,30), { url: '#' });
       timetable.addEvent('Zumba', 'Madrid', new Date(2015,7,17,12), new Date(2015,7,17,13), { url: '#' });
