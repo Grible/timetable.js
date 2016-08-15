@@ -61,7 +61,7 @@ Timetable.Renderer = function(tt) {
 		},
 		addLocations: function(newLocations) {
 			function hasProperFormat() {
-				return newLocations instanceof Array && typeof newLocations[0] === "string";
+				return newLocations instanceof Array && typeof newLocations[0] === 'string';
 			}
 
 			function hasExtendFormat() {
