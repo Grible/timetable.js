@@ -16,3 +16,5 @@ bower_components
 #Icon?
 ehthumbs.db
 Thumbs.db
+app/styles/*.css
+app/styles/*.css.map
