@@ -29,7 +29,7 @@ Timetable.Renderer = function(tt) {
 		return number === parseInt(number, 10);
 	}
 	function isInHourRange(number) {
-		return number >= 0 && number < 24;
+		return number >= 0 && number < 25;
 	}
 	function locationExistsIn(loc, locs) {
 		return locs.indexOf(loc) !== -1;
@@ -40,7 +40,7 @@ Timetable.Renderer = function(tt) {
 		return correctTypes && correctOrder;
 	}
 	function getDurationHours(startHour, endHour) {
-		return endHour >= startHour ? endHour - startHour : 24 + endHour - startHour;
+		return endHour >= startHour ? endHour - startHour : 25 + endHour - startHour;
 	}
 
 	Timetable.prototype = {
@@ -49,7 +49,7 @@ Timetable.Renderer = function(tt) {
 				this.scope.hourStart = start;
 				this.scope.hourEnd = end;
 			} else {
-				throw new RangeError('Timetable scope should consist of (start, end) in whole hours from 0 to 23');
+				throw new RangeError('Timetable scope should consist of (start, end) in whole hours from 0 to 24');
 			}
 
 			return this;
@@ -150,7 +150,7 @@ Timetable.Renderer = function(tt) {
 					if (hour === timetable.scope.hourEnd && (timetable.scope.hourStart !== timetable.scope.hourEnd || looped)) {
 						completed = true;
 					}
-					if (++hour === 24) {
+					if (++hour === 25) {
 						hour = 0;
 						looped = true;
 					}
