@@ -143,8 +143,14 @@ Timetable.Renderer = function(tt) {
 			}
 			function appendRowHeaders(ulNode) {
 				for (var k=0; k<timetable.locations.length; k++) {
+					var url = timetable.locations[k].href;
 					var liNode = ulNode.appendChild(document.createElement('li'));
 					var spanNode = liNode.appendChild(document.createElement('span'));
+					if (url !== undefined) {
+						var aNode = liNode.appendChild(document.createElement('a'));
+						aNode.href = timetable.locations[k].href;
+						aNode.appendChild(spanNode);
+					}
 					spanNode.className = 'row-heading';
 					spanNode.textContent = timetable.locations[k].title;
 				}
