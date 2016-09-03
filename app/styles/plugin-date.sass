@@ -24,6 +24,7 @@ $datetable-entry-color: #EC6A5E !default
 $datetable-entry-color-hover: darken($datetable-entry-color, 10%) !default
 $datetable-entry-border: 1px solid darken($datetable-entry-color, 15%) !default
 $datetable-entry-padding: 10px !default
+$datetable-grid-column: 2
 
 /* ==========================================================================
  * Mixins
@@ -162,7 +163,7 @@ $datetable-entry-padding: 10px !default
 				bottom: 0
 			&:before
 				background-image: linear-gradient(to right, $datetable-grid-color 1px, transparent 1px)
-				background-size: $datetable-date-column-width / 2 auto
+				background-size: $datetable-date-column-width / $datetable-grid-column auto
 			&:after
 				background-image: linear-gradient(to right, $datetable-grid-color, $datetable-grid-color 1px, $datetable-row-even-color 1px, $datetable-row-even-color 2px, $datetable-grid-color 2px, $datetable-grid-color 3px, transparent 3px, transparent)
 				background-size: $datetable-date-column-width auto
