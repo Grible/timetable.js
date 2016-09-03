@@ -2,6 +2,7 @@
 'use strict';
 // generated on 2015-06-09 using generator-gulp-webapp 0.3.0
 var gulp = require('gulp');
+var gulp_concat = require('gulp-concat');
 var $ = require('gulp-load-plugins')();
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
@@ -25,7 +26,7 @@ gulp.task('styles', function () {
 });
 
 gulp.task('jshint', function () {
-  return gulp.src('app/scripts/**/*.js')
+  return gulp.src('app/scripts/*.js')
     .pipe(reload({stream: true, once: true}))
     .pipe($.jshint())
     .pipe($.jshint.reporter('jshint-stylish'))
@@ -44,7 +45,9 @@ gulp.task('html', ['styles'], function () {
 });
 
 gulp.task('scripts', function(){
-  return gulp.src('app/scripts/plugin.js')
+  return gulp.src('app/scripts/*.js')
+    .pipe(gulp_concat('timetable.js'))
+    .pipe(gulp.dest('dist/scripts'))
     .pipe($.uglify())
     .pipe($.rename('timetable.min.js'))
     .pipe(gulp.dest('dist/scripts'));
@@ -62,13 +65,13 @@ gulp.task('images', function () {
     .pipe(gulp.dest('dist/images'));
 });
 
-gulp.task('fonts', function () {
-  return gulp.src(require('main-bower-files')({
-    filter: '**/*.{eot,svg,ttf,woff,woff2}'
-  }).concat('app/fonts/**/*'))
-    .pipe(gulp.dest('.tmp/fonts'))
-    .pipe(gulp.dest('dist/fonts'));
-});
+// gulp.task('fonts', function () {
+//   return gulp.src(require('main-bower-files')({
+//     filter: '**/*.{eot,svg,ttf,woff,woff2}'
+//   }).concat('app/fonts/**/*'))
+//     .pipe(gulp.dest('.tmp/fonts'))
+//     .pipe(gulp.dest('dist/fonts'));
+// });
 
 gulp.task('extras', function () {
   return gulp.src([
@@ -81,7 +84,8 @@ gulp.task('extras', function () {
 
 gulp.task('clean', require('del').bind(null, ['.tmp', 'dist']));
 
-gulp.task('serve', ['styles', 'fonts'], function () {
+// gulp.task('serve', ['styles', 'fonts'], function () {
+gulp.task('serve', ['styles'], function () {
   browserSync({
     notify: false,
     port: 9000,
@@ -97,13 +101,14 @@ gulp.task('serve', ['styles', 'fonts'], function () {
   gulp.watch([
     'app/*.html',
     'app/scripts/**/*.js',
-    'app/images/**/*',
-    '.tmp/fonts/**/*'
+    'app/images/**/*'
+    // '.tmp/fonts/**/*'
   ]).on('change', reload);
 
   gulp.watch('app/styles/**/*.sass', ['styles']);
-  gulp.watch('app/fonts/**/*', ['fonts']);
-  gulp.watch('bower.json', ['wiredep', 'fonts']);
+  // gulp.watch('app/fonts/**/*', ['fonts']);
+  // gulp.watch('bower.json', ['wiredep', 'fonts']);
+  gulp.watch('bower.json', ['wiredep']);
 });
 
 // inject bower components
@@ -123,7 +128,8 @@ gulp.task('wiredep', function () {
     .pipe(gulp.dest('app'));
 });
 
-gulp.task('build', ['jshint', 'html', 'scripts', 'images', 'fonts', 'extras'], function () {
+// gulp.task('build', ['jshint', 'html', 'scripts', 'images', 'fonts', 'extras'], function () {
+gulp.task('build', ['jshint', 'html', 'scripts', 'images', 'extras'], function () {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
