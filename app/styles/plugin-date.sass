@@ -1,0 +1,189 @@
+// bower:scss
+// endbower
+
+/* ==========================================================================
+ * Default settings
+ * ==========================================================================
+
+// dimensions
+$datetable-date-column-width: 96px !default
+$datetable-date-row-height: 46px !default
+$datetable-heading-height: 30px !default
+$datetable-breakpoint: "only screen and (max-width: 960px)" !default
+// colors & decoration
+$datetable-grid-color: #E5E5E5 !default
+$datetable-grid: 1px solid $datetable-grid-color !default
+$datetable-row-header-padding: 15px !default
+$datetable-row-header-color: #EFEFEF !default
+$datetable-legend-row-separator: 1px solid white !default
+$datetable-entry-row-separator: none !default
+$datetable-row-header-gap: 5px solid transparent !default
+$datetable-row-uneven-color: #FDFDFD !default
+$datetable-row-even-color: #F4F4F4 !default
+$datetable-entry-color: #EC6A5E !default
+$datetable-entry-color-hover: darken($datetable-entry-color, 10%) !default
+$datetable-entry-border: 1px solid darken($datetable-entry-color, 15%) !default
+$datetable-entry-padding: 10px !default
+$datetable-grid-column: 2
+
+/* ==========================================================================
+ * Mixins
+ * ==========================================================================
+
+=valign-middle
+	position: relative
+	top: 50%
+	transform: translateY(-50%)
+
+=valign-parent
+	transform-style: preserve-3d
+
+=clearfix
+	&::after
+		clear: both
+		content: ""
+		display: table
+
+=ellipsis($width: 100%)
+	display: inline-block
+	max-width: $width
+	overflow: hidden
+	text-overflow: ellipsis
+	white-space: nowrap
+	word-wrap: normal
+
+
+
+/* ==========================================================================
+ * Datetable
+ * ==========================================================================
+
+.datetable
+	box-sizing: border-box
+	+clearfix
+
+	*, *:before, *:after
+		box-sizing: inherit
+
+	ul, li
+		margin: 0
+		padding: 0
+		list-style-type: none
+
+	aside, section
+		float: left
+
+	aside
+		width: 25%
+		padding: 0 !important
+		margin-top: $datetable-date-row-height
+		border-right: $datetable-row-header-gap
+		li
+			padding: 0 $datetable-row-header-padding
+			background-color: $datetable-row-header-color
+			line-height: $datetable-date-row-height
+
+			&:not(:last-of-type)
+				border-bottom: $datetable-legend-row-separator
+
+		.row-heading
+			+ellipsis
+
+	ul
+		list-style-type: none
+		margin: 0
+
+	aside li, date li
+		height: $datetable-date-row-height
+
+	section
+		width: 75%
+		padding: 0 !important
+		overflow-x: scroll
+		-webkit-overflow-scrolling: touch
+
+		date
+			white-space: nowrap
+			display: inline-block
+
+		header
+			height: $datetable-date-row-height
+			transform-style: preserve-3d
+			+clearfix
+			font-size: 0
+			li
+				display: inline-block
+				font-size: 1rem
+				overflow: visible
+				width: 0
+				line-height: $datetable-date-row-height
+				display: inline-block
+				position: relative
+
+				&:not(:last-of-type)
+					width: $datetable-date-column-width
+				.date-label
+					display: block
+					position: absolute
+					left: $datetable-date-column-width/2
+					transform: translateX(-50%)
+
+	@media #{$datetable-breakpoint}
+		aside
+			width: 40%
+		section
+			width: 60%
+
+	ul.room-timeline
+		border-left: none
+		position: relative
+		overflow: hidden
+
+		li
+			position: relative
+			background-color: $datetable-row-even-color
+			&:nth-of-type(odd)
+				background-color: $datetable-row-uneven-color
+			&:first-of-type
+				border-top: $datetable-grid
+			&:last-of-type
+				border-bottom: $datetable-grid
+			&:not(:last-of-type)
+				border-bottom: $datetable-entry-row-separator
+			&:first-child .date-entry
+				height: $datetable-date-row-height - 2px
+
+			&:after, &:before
+				content: ""
+				position: absolute
+				z-index: 1
+				left: 0
+				top: 0
+				right: 0
+				bottom: 0
+			&:before
+				background-image: linear-gradient(to right, $datetable-grid-color 1px, transparent 1px)
+				background-size: $datetable-date-column-width / $datetable-grid-column auto
+			&:after
+				background-image: linear-gradient(to right, $datetable-grid-color, $datetable-grid-color 1px, $datetable-row-even-color 1px, $datetable-row-even-color 2px, $datetable-grid-color 2px, $datetable-grid-color 3px, transparent 3px, transparent)
+				background-size: $datetable-date-column-width auto
+				background-position: -2px 0
+	.date-entry
+		background-color: $datetable-entry-color
+		transition: 200ms background-color
+		height: $datetable-date-row-height - 1px
+		display: block
+		position: absolute
+		z-index: 2
+		padding: 0 $datetable-entry-padding
+		white-space: normal
+		overflow: hidden
+		color: white
+		border: $datetable-entry-border
+		+valign-parent
+		small
+			+valign-middle
+			display: block
+
+		&:hover
+			background-color: $datetable-entry-color-hover

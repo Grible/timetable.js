@@ -7,6 +7,7 @@
     <title>Timetable.js demo</title>
     <!-- build:css styles/timetablejs.css -->
     <link rel="stylesheet" href="styles/plugin.css">
+    <link rel="stylesheet" href="styles/plugin-date.css">
     <!-- endbuild -->
     <!-- build:css styles/demo.css -->
     <link rel="stylesheet" href="styles/demo.css">
@@ -21,8 +22,11 @@
 
     <div class="timetable"></div>
 
+    <div class="datetable"></div>
+
     <!-- build:js scripts/timetable.js -->
     <script src="scripts/plugin.js"></script>
+    <script src="scripts/plugin-date.js"></script>
     <!-- endbuild -->
 
     <script>
@@ -46,14 +50,25 @@
       renderer.draw('.timetable');
     </script>
 
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
-      (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-      e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-      e.src='//www.google-analytics.com/analytics.js';
-      r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-      ga('create','UA-37417680-5');ga('send','pageview');
+      var datetable = new Datetable();
+
+      datetable.setScope(new Date(2015,7,9), new Date(2015,8,3))
+
+      datetable.addLocations(['Rotterdam', 'Madrid', 'Los Angeles', 'London', 'New York', 'Jakarta', 'Tokyo']);
+
+      datetable.addEvent('Sightseeing', 'Rotterdam', new Date(2015,7,9), new Date(2015,7,11,12), { url: '#' });
+      datetable.addEvent('Zumba', 'Madrid', new Date(2015,7,12), new Date(2015,7,13), { url: '#' });
+      datetable.addEvent('Zumbu', 'Madrid', new Date(2015,7,16), new Date(2015,7,20), { url: '#' });
+      datetable.addEvent('Lasergaming', 'London', new Date(2015,7,17), new Date(2015,7,19), { class: 'vip-only', data: { maxPlayers: 14, gameType: 'Capture the flag' } });
+      datetable.addEvent('All-you-can-eat grill', 'New York', new Date(2015,7,21), new Date(2015,8,1), { url: '#' });
+      datetable.addEvent('Hackathon', 'Tokyo', new Date(2015,7,11), new Date(2015,7,20)); // options attribute is not used for this event
+      datetable.addEvent('Tokyo Hackathon Livestream', 'Los Angeles', new Date(2015,7,12), new Date(2015,7,16)); // options attribute is not used for this event
+      datetable.addEvent('Lunch', 'Jakarta', new Date(2015,7,9), new Date(2015,7,11), { url: '#' });
+      datetable.addEvent('Cocktails', 'Rotterdam', new Date(2015,8,1), new Date(2015,8,2), { class: 'vip-only' });
+
+      var renderer = new Datetable.Renderer(datetable);
+      renderer.draw('.datetable');
     </script>
 </body>
 </html>
