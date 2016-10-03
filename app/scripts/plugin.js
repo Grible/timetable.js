@@ -101,7 +101,8 @@ Timetable.Renderer = function(tt) {
 				throw new Error('Unknown location');
 			}
 			if (!isValidTimeRange(start, end)) {
-				throw new Error('Invalid time range: ' + JSON.stringify([start, end]));
+				console.log('Invalid time range: ' + JSON.stringify([start, end]));
+				return;
 			}
 
 			var optionsHasValidType = Object.prototype.toString.call(options) === '[object Object]';
