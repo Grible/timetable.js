@@ -16,6 +16,15 @@
             expect(this.timetable.interval).equal(60);
         });
 
+        it('should allow to set its interval from 1 to 60', function() {
+            var errorMsg = 'Timetable interval should be an integer 1 to 60';
+            var tt = this.timetable;
+            expect(tt.setInterval(1).interval).equal(1);
+            expect(tt.setInterval(60).interval).equal(60);
+            expect(function() { tt.setInterval(0); }).to.throw(Error, errorMsg);
+            expect(function() { tt.setInterval(61); }).to.throw(Error, errorMsg);
+        });
+
         it('should allow to set its scope in hours with maximum 24 hours span', function() {
             var errorMsg = 'Timetable scope should consist of (start, end) in whole hours from 0 to 23';
             var tt = this.timetable;
