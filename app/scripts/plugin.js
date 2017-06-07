@@ -53,7 +53,7 @@ Timetable.Renderer = function(tt) {
     Timetable.prototype = {
         setInterval: function(interval) {
             if (interval > 60 || interval === 0) {
-                throw new Error('Interval valueis between 1 and 60');
+                throw new Error('Timetable interval should be an integer 1 to 60');
             } else {
                 this.interval = interval;
             }
