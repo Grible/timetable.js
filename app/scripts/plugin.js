@@ -111,8 +111,10 @@ Timetable.Renderer = function(tt) {
     }
 
     function prettyFormatHour(hour) {
+        var minute = Math.round((hour - Math.floor(hour)) * 60);
+        var minutePrefix = minute < 10 ? '0' : '';
         var prefix = hour < 10 ? '0' : '';
-        return prefix + hour + ':00';
+        return prefix + hour + ':' + minutePrefix + minute;
     }
 
     Timetable.Renderer.prototype = {
