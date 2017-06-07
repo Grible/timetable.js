@@ -154,6 +154,8 @@ Timetable.Renderer = function(tt) {
                 var completed = false;
                 var looped = false;
 
+                var interval = timetable.interval;
+
                 for (var hour = timetable.scope.hourStart; !completed;) {
                     var liNode = headerULNode.appendChild(document.createElement('li'));
                     var spanNode = liNode.appendChild(document.createElement('span'));
@@ -163,7 +165,8 @@ Timetable.Renderer = function(tt) {
                     if (hour === timetable.scope.hourEnd && (timetable.scope.hourStart !== timetable.scope.hourEnd || looped)) {
                         completed = true;
                     }
-                    if (++hour === 24) {
+                    hour += interval / 60;
+                    if (Math.floor(hour) === 24) {
                         hour = 0;
                         looped = true;
                     }
