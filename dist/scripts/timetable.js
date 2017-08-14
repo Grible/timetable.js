@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /*jshint -W079*/
 
 'use strict';
@@ -92,9 +93,10 @@ Timetable.Renderer = function(tt) {
 				location: location,
 				startDate: start,
 				endDate: end,
-				options: optionsHasValidType ? options : undefined
+				options: optionsHasValidType ? options : undefined,
+                id: "time-entry-" + id
 			});
-
+			id++;
 			return this;
 		},
         removeEvent: function(id){
