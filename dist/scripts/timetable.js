@@ -29,10 +29,15 @@ Timetable.Renderer = function(tt) {
 		return number === parseInt(number, 10);
 	}
 	function isInHourRange(number) {
-		return number >= 0 && number < 24;
+		return number >= 0 && number < 25;
 	}
 	function locationExistsIn(loc, locs) {
-		return locs.indexOf(loc) !== -1;
+		for (var k=0; k<locs.length; k++) {
+			if (loc === locs[k].id) {
+				return true;
+			}
+		}
+		return false;
 	}
 	function isValidTimeRange(start, end) {
 		var correctTypes = start instanceof Date && end instanceof Date;
@@ -40,7 +45,7 @@ Timetable.Renderer = function(tt) {
 		return correctTypes && correctOrder;
 	}
 	function getDurationHours(startHour, endHour) {
-		return endHour >= startHour ? endHour - startHour : 24 + endHour - startHour;
+		return endHour >= startHour ? endHour - startHour : 25 + endHour - startHour;
 	}
 
 	Timetable.prototype = {
@@ -49,14 +54,18 @@ Timetable.Renderer = function(tt) {
 				this.scope.hourStart = start;
 				this.scope.hourEnd = end;
 			} else {
-				throw new RangeError('Timetable scope should consist of (start, end) in whole hours from 0 to 23');
+				throw new RangeError('Timetable scope should consist of (start, end) in whole hours from 0 to 24');
 			}
 
 			return this;
 		},
 		addLocations: function(newLocations) {
 			function hasProperFormat() {
-				return newLocations instanceof Array;
+				return newLocations instanceof Array && typeof newLocations[0] === 'string';
+			}
+
+			function hasExtendFormat() {
+				return newLocations instanceof Array && newLocations[0] instanceof Object;
 			}
 
 			var existingLocations = this.locations;
@@ -64,12 +73,24 @@ Timetable.Renderer = function(tt) {
 			if (hasProperFormat()) {
 				newLocations.forEach(function(loc) {
 					if (!locationExistsIn(loc, existingLocations)) {
+						existingLocations.push({
+							id: loc,
+							title: loc
+						});
+					} else {
+						throw new Error('Location already exists');
+					}
+				});
+			} else if (hasExtendFormat()) {
+				newLocations.forEach(function(loc) {
+					if (!locationExistsIn(loc, existingLocations)) {
 						existingLocations.push(loc);
 					} else {
 						throw new Error('Location already exists');
 					}
 				});
-			} else {
+			}
+			else {
 				throw new Error('Tried to add locations in wrong format');
 			}
 
@@ -80,7 +101,8 @@ Timetable.Renderer = function(tt) {
 				throw new Error('Unknown location');
 			}
 			if (!isValidTimeRange(start, end)) {
-				throw new Error('Invalid time range: ' + JSON.stringify([start, end]));
+				console.log('Invalid time range: ' + JSON.stringify([start, end]));
+				return;
 			}
 
 			var optionsHasValidType = Object.prototype.toString.call(options) === '[object Object]';
@@ -122,10 +144,16 @@ Timetable.Renderer = function(tt) {
 			}
 			function appendRowHeaders(ulNode) {
 				for (var k=0; k<timetable.locations.length; k++) {
+					var url = timetable.locations[k].href;
 					var liNode = ulNode.appendChild(document.createElement('li'));
 					var spanNode = liNode.appendChild(document.createElement('span'));
+					if (url !== undefined) {
+						var aNode = liNode.appendChild(document.createElement('a'));
+						aNode.href = timetable.locations[k].href;
+						aNode.appendChild(spanNode);
+					}
 					spanNode.className = 'row-heading';
-					spanNode.textContent = timetable.locations[k];
+					spanNode.textContent = timetable.locations[k].title;
 				}
 			}
 			function appendTimetableSection(container) {
@@ -150,7 +178,7 @@ Timetable.Renderer = function(tt) {
 					if (hour === timetable.scope.hourEnd && (timetable.scope.hourStart !== timetable.scope.hourEnd || looped)) {
 						completed = true;
 					}
-					if (++hour === 24) {
+					if (++hour === 25) {
 						hour = 0;
 						looped = true;
 					}
@@ -167,7 +195,7 @@ Timetable.Renderer = function(tt) {
 			function appendLocationEvents(location, node) {
 				for (var k=0; k<timetable.events.length; k++) {
 					var event = timetable.events[k];
-					if (event.location === location) {
+					if (event.location === location.id) {
 						appendEvent(event, node);
 					}
 				}
@@ -177,9 +205,9 @@ Timetable.Renderer = function(tt) {
 				var hasURL, hasAdditionalClass, hasDataAttributes = false;
 
 				if(hasOptions) {
-					hasURL = (event.options.url !== undefined) ? true : false;
-					hasAdditionalClass = (event.options.class !== undefined) ? true : false;
-					hasDataAttributes = (event.options.data !== undefined) ? true : false;
+					hasURL = event.options.url !== undefined;
+					hasAdditionalClass = event.options.class !== undefined;
+					hasDataAttributes = event.options.data !== undefined;
 				}
 
 				var elementType = hasURL ? 'a' : 'span';

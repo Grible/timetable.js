@@ -1,5 +1,5 @@
 # Timetable.js
-Vanilla javascript plugin for building nice responsive timetables. Provides a simple javascript interface to add events and locations which can be rendered to nice HTML. Works on mobile devices as well.
+ Vanilla javascript plugin for building nice responsive timetables. Provides a simple javascript interface to add events and locations which can be rendered to nice HTML. Works on mobile devices as well.
 
 ## Just show me the demo
 Okay: [**demo**](http://timetablejs.grible.co). Also, have a look at the website: [http://timetablejs.org](http://timetablejs.org).

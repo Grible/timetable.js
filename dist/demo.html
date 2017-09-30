@@ -22,10 +22,22 @@
     <script>
       var timetable = new Timetable();
 
-      timetable.setScope(9,3)
+      timetable.setScope(9,3);
 
-      timetable.addLocations(['Rotterdam', 'Madrid', 'Los Angeles', 'London', 'New York', 'Jakarta', 'Tokyo']);
+      timetable.addLocations(['Rotterdam', 'Madrid']);
 
+      timetable.addLocations(
+              [
+                { id: 'Petersburg', title: 'St.Petersburg', href: 'http://www.visit-petersburg.ru/en/'},
+                { id: 'Los Angeles', title: 'Los Angeles'},
+                { id: 'London', title: 'London'},
+                { id: 'New York', title: 'New York'},
+                { id: 'Jakarta', title: 'Jakarta'},
+                { id: 'Tokyo', title: 'Tokyo'}
+              ]
+      );
+
+      timetable.addEvent('Beer party', 'Petersburg', new Date(2015,7,17,19,00), new Date(2015,7,18,08,00), { url: '#' });
       timetable.addEvent('Sightseeing', 'Rotterdam', new Date(2015,7,17,9,00), new Date(2015,7,17,11,30), { url: '#' });
       timetable.addEvent('Zumba', 'Madrid', new Date(2015,7,17,12), new Date(2015,7,17,13), { url: '#' });
       timetable.addEvent('Zumbu', 'Madrid', new Date(2015,7,17,13,30), new Date(2015,7,17,15), { url: '#' });
