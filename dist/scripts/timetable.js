@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /*jshint -W079*/
 
 'use strict';
@@ -10,6 +11,8 @@ var Timetable = function() {
 	this.locations = [];
 	this.events = [];
 };
+
+var id = 0;
 
 Timetable.Renderer = function(tt) {
 	if (!(tt instanceof Timetable)) {
@@ -90,11 +93,23 @@ Timetable.Renderer = function(tt) {
 				location: location,
 				startDate: start,
 				endDate: end,
-				options: optionsHasValidType ? options : undefined
+				options: optionsHasValidType ? options : undefined,
+                id: "time-entry-" + id
 			});
-
+			id++;
 			return this;
-		}
+		},
+        removeEvent: function(id){
+            var index;
+            for(var i = 0; i < this.events.length; i++){
+                if(this.events[i].id == id){
+                    index = i;
+                }
+            }
+            if (index > -1) {
+                this.events.splice(index, 1);
+            }
+        }
 	};
 
 	function emptyNode(node) {
@@ -199,6 +214,7 @@ Timetable.Renderer = function(tt) {
 				aNode.className = hasAdditionalClass ? 'time-entry ' + event.options.class : 'time-entry';
 				aNode.style.width = computeEventBlockWidth(event);
 				aNode.style.left = computeEventBlockOffset(event);
+                aNode.id = event.id;
 				smallNode.textContent = event.name;
 			}
 			function computeEventBlockWidth(event) {
