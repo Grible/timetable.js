@@ -9,6 +9,10 @@ var Timetable = function() {
 	};
 	this.locations = [];
 	this.events = [];
+	this.options = {
+		setFooter: false,
+		setHeader: ''
+	};
 };
 
 Timetable.Renderer = function(tt) {
@@ -54,6 +58,12 @@ Timetable.Renderer = function(tt) {
 
 			return this;
 		},
+    setFooter: function(){
+    	this.options.setFooter = true;
+    },
+    getOptions: function(){
+    	return this.options;
+    },
 		addLocations: function(newLocations) {
 			function hasProperFormat() {
 				return newLocations instanceof Array;
@@ -158,6 +168,9 @@ Timetable.Renderer = function(tt) {
 			}
 			function appendTimeRows(node) {
 				var ulNode = node.appendChild(document.createElement('ul'));
+				var footer = timetable.options.setFooter ? node.appendChild(document.createElement('footer')) : false;
+				if (footer) { footer.appendChild(node.firstElementChild.firstElementChild.cloneNode(true)); }
+
 				ulNode.className = 'room-timeline';
 				for (var k=0; k<timetable.locations.length; k++) {
 					var liNode = ulNode.appendChild(document.createElement('li'));
@@ -226,5 +239,4 @@ Timetable.Renderer = function(tt) {
 			appendTimetableSection(container);
 		}
 	};
-
 })();
