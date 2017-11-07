@@ -2,17 +2,13 @@
 
 'use strict';
 
-var Timetable = function() {
+window.Timetable = function() {
 	this.scope = {
 		hourStart: 9,
 		hourEnd: 17
 	};
 	this.locations = [];
 	this.events = [];
-	this.options = {
-		setFooter: false,
-		setHeader: ''
-	};
 };
 
 Timetable.Renderer = function(tt) {
@@ -46,8 +42,47 @@ Timetable.Renderer = function(tt) {
 	function getDurationHours(startHour, endHour) {
 		return endHour >= startHour ? endHour - startHour : 24 + endHour - startHour;
 	}
+	function isValidDate(dateString) {
+	  var isValid = false;
+	  var date;
+    if (typeof dateString !== 'string') { return false; }
+	  date =new Date(dateString);
+
+	  if (Object.prototype.toString.call(date) === '[object Date]') {
+	    if (isNaN(date.getTime())) {
+	      return false;
+	    } else {
+	      //Need regExp check for month and day
+	      isValid = true;
+	    }
+	  } else {
+	    return false;
+	  }
+	  return isValid;
+  }
+  function prettyFormat(number) {
+		var prefix = number < 10 ? '0' : '';
+		return prefix + number;
+	}
+  //return the name of the month
+  var monthes = 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_');
+  function localeMonths(month) {
+    if (!month || (month < 0 && month > 11)) { throw new Error('Incorrect month.'); }
+    return monthes[month];
+  }
+  //Formate date to DD MMM YYYY
+  function formatedDate(dateString){
+    if (!isValidDate(dateString)) { throw new Error('Incorrect date format.'); }
+  	var date = new Date(dateString);
+    return prettyFormat(date.getDate()) + ' ' + localeMonths(date.getMonth()) + ' ' + date.getFullYear();
+  }
 
 	Timetable.prototype = {
+    options : {
+      footer: false,
+      header: '',
+      date: '',            //Use dateString in ISO8601 or IETF RFC 2822 format
+    },
 		setScope: function(start, end) {
 			if (isValidHourRange(start, end)) {
 				this.scope.hourStart = start;
@@ -58,8 +93,20 @@ Timetable.Renderer = function(tt) {
 
 			return this;
 		},
+		//Set header with current date
+		setCurrentDate: function(){
+			this.options.date = new Date();
+      return this.options.date;
+		},
+		//Set header with user's date
+		setDate: function(date){
+			if(!isValidDate(date)){ throw new Error('Wrong date format. Use ISO-8601 or IETF RFC 2822 date format.'); }
+			this.options.date = date;
+      return this.options.date;
+		},
+		//Set footer with time(clone header)
     setFooter: function(){
-    	this.options.setFooter = true;
+    	this.options.footer = true;
     },
     getOptions: function(){
     	return this.options;
@@ -146,11 +193,13 @@ Timetable.Renderer = function(tt) {
 			}
 			function appendColumnHeaders(node) {
 				var headerNode = node.appendChild(document.createElement('header'));
+				if(timetable.options.date !== '') { appendColumnDateHeaders(headerNode); }
 				var headerULNode = headerNode.appendChild(document.createElement('ul'));
 
 				var completed = false;
 				var looped = false;
 
+        headerULNode.className = 'headerTimeUl';
 				for (var hour=timetable.scope.hourStart; !completed;) {
 					var liNode = headerULNode.appendChild(document.createElement('li'));
 					var spanNode = liNode.appendChild(document.createElement('span'));
@@ -166,10 +215,34 @@ Timetable.Renderer = function(tt) {
 					}
 				}
 			}
+			function appendColumnDateHeaders(node) {
+				var headerULNode = node.appendChild(document.createElement('ul'));
+				node.parentNode.getElementsByTagName('header')[0].style.height = '92px';
+				container.getElementsByTagName('aside')[0].style.marginTop = '92px';
+
+				var liNodeDay = headerULNode.appendChild(document.createElement('li'));
+				var divNodeDay = liNodeDay.appendChild(document.createElement('div'));
+				var liNodeNextDay = headerULNode.appendChild(document.createElement('li'));
+				var divNodeNextDay = liNodeNextDay.appendChild(document.createElement('div'));
+				divNodeDay.className = 'time-label';
+				divNodeDay.textContent = formatedDate(timetable.options.date);
+				divNodeNextDay.className = 'time-label';
+        headerULNode.className = 'headerDateUl';
+
+        if (timetable.scope.hourEnd < timetable.scope.hourStart) {
+        	var nextDay = new Date(timetable.options.date);
+        	nextDay.setDate(nextDay.getDate() + 1);
+				  divNodeNextDay.textContent = formatedDate(nextDay.toString());
+          liNodeDay.style.width = (24 - timetable.scope.hourStart) * 96 + 'px';
+          liNodeNextDay.style.width = timetable.scope.hourEnd * 96 + 'px';
+        } else {
+          liNodeDay.style.width = getDurationHours * 96 + 'px';
+        }
+			}
 			function appendTimeRows(node) {
 				var ulNode = node.appendChild(document.createElement('ul'));
-				var footer = timetable.options.setFooter ? node.appendChild(document.createElement('footer')) : false;
-				if (footer) { footer.appendChild(node.firstElementChild.firstElementChild.cloneNode(true)); }
+				var footer = timetable.options.footer ? node.appendChild(document.createElement('footer')) : false;
+				if (footer) { footer.appendChild(node.getElementsByClassName('headerTimeUl')[0].cloneNode(true)); }
 
 				ulNode.className = 'room-timeline';
 				for (var k=0; k<timetable.locations.length; k++) {
@@ -240,3 +313,6 @@ Timetable.Renderer = function(tt) {
 		}
 	};
 })();
+
+module.exports.Timetable = Timetable;
+module.exports.Timetable.Renderer =  Timetable.Renderer;

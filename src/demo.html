@@ -5,8 +5,12 @@
     <meta name="description" content="Vanilla javascript plugin for building nice responsive timetables">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Timetable.js demo</title>
-    <link rel="stylesheet" href="styles/timetablejs.css">
+    <!-- build:css styles/timetablejs.css -->
+    <link rel="stylesheet" href="styles/plugin.css">
+    <!-- endbuild -->
+    <!-- build:css styles/demo.css -->
     <link rel="stylesheet" href="styles/demo.css">
+    <!-- endbuild -->
   </head>
   <body>
 
@@ -17,12 +21,16 @@
 
     <div class="timetable"></div>
 
-    <script src="scripts/timetable.js"></script>
+    <!-- build:js scripts/timetable.js -->
+    <script src="scripts/plugin.js"></script>
+    <!-- endbuild -->
 
     <script>
       var timetable = new Timetable();
 
-      timetable.setScope(9,3)
+      timetable.setScope(9,3);
+      timetable.setFooter();
+      timetable.setCurrentDate();
 
       timetable.addLocations(['Rotterdam', 'Madrid', 'Los Angeles', 'London', 'New York', 'Jakarta', 'Tokyo']);
 
