@@ -2,12 +2,6 @@
   "name": "timetable.js",
   "version": "0.1.0",
   "description": "Vanilla javascript plugin for building nice responsive timetables",
-  "keywords": [
-    "timetable",
-    "responsive",
-    "schedule",
-    "agenda",
-    "events"
   "scripts": {
     "build": "./node_modules/.bin/webpack",
     "build-watch": "./node_modules/.bin/webpack -w",

@@ -36,6 +36,15 @@ Add your events using `addEvent(name, location, startDate, endDate[, options])`:
 ```javascript
 timetable.addEvent('Frankadelic', 'Nile', new Date(2015,7,17,10,45), new Date(2015,7,17,12,30));
 ```
+Add footer similar header
+```javascript
+timetable.setFooter();
+```
+Add optional header with date
+```javascript
+timetable.setCurrentDate();
+timetable.setDate('ISODateString');
+```
 
 In addition, you can pass options such as URLs, classes, or data-* attributes through an object:
 ```javascript
