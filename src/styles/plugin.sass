@@ -112,7 +112,7 @@ $timetable-entry-padding: 10px !default
 			white-space: nowrap
 			display: inline-block
 
-		header
+		header, footer
 			height: $timetable-hour-row-height
 			transform-style: preserve-3d
 			+clearfix
@@ -136,6 +136,10 @@ $timetable-entry-padding: 10px !default
 					transform: translateX(-50%)
 				&:last-of-type .time-label
 					transform: translateX(-100%)
+				div.time-label
+				  width: 100%
+				&:last-of-type div.time-label
+				  transform: translateX(0)
 
 	ul.room-timeline
 		border-left: none
@@ -190,4 +194,15 @@ $timetable-entry-padding: 10px !default
 
 		&:hover
 			background-color: $timetable-entry-color-hover
+
+.headerDateUl li
+	&:nth-child(even)
+	  background-color: $timetable-row-uneven-color
+	&:nth-child(odd)
+	  background-color: $timetable-row-even-color
+.timeline
+  border: 1px #ff0000 solid
+  position: relative
+  width: 1px
+  z-index: 10
 

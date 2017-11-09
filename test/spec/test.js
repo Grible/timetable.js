@@ -11,6 +11,17 @@
       expect(this.timetable.scope).to.deep.equal({hourStart: 9, hourEnd: 17});
     });
 
+    it('should correct work with different dates', function(){
+      var errorMsg = 'Wrong date format. Use JavaScript date format.';
+      var errorFormat = 'Wrong format. Use JavaScript date format';
+      var tt = this.timetable;
+      expect(function(){tt.setDate('sdfhjskdhf'); }).to.throw(Error, errorMsg);
+      //expect(function(){tt.setDate('28 11 2016', 'dsdfhskjdhfk'); }).to.throw(Error, errorFormat);
+      //expect(function(){tt.setCurrentDate('35 Dey 2981'); }).to.throw(Error, errorFormat);
+      //expect(tt.setDate(new Date(), '28 Nov 2016').dateFormat).to.deep.equal('28 Nov 2016');
+      expect(tt.setDate('28 Nov 2016').date).to.deep.equal('28 Nov 2016');
+    });
+
     it('should allow to set its scope in hours with maximum 24 hours span', function () {
       var errorMsg = 'Timetable scope should consist of (start, end) in whole hours from 0 to 23';
       var tt = this.timetable;

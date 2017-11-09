@@ -1,8 +1,6 @@
-/*jshint -W079*/
-
 'use strict';
 
-var Timetable = function() {
+window.Timetable = function() {
 	this.scope = {
 		hourStart: 9,
 		hourEnd: 17
@@ -42,8 +40,49 @@ Timetable.Renderer = function(tt) {
 	function getDurationHours(startHour, endHour) {
 		return endHour >= startHour ? endHour - startHour : 24 + endHour - startHour;
 	}
+	function isValidDate(dateString) {
+	  var isValid = false;
+	  var date;
+    if (typeof dateString !== 'string') { return false; }
+	  date =new Date(dateString);
+
+	  if (Object.prototype.toString.call(date) === '[object Date]') {
+	    if (isNaN(date.getTime())) {
+	      return false;
+	    } else {
+	      //Need regExp check for month and day
+	      isValid = true;
+	    }
+	  } else {
+	    return false;
+	  }
+	  return isValid;
+  }
+  function prettyFormat(number) {
+		var prefix = number < 10 ? '0' : '';
+		return prefix + number;
+	}
+  //return the name of the month
+  var monthes = 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_');
+  function localeMonths(month) {
+    if (!month || (month < 0 && month > 11)) { throw new Error('Incorrect month.'); }
+    return monthes[month];
+  }
+  //Formate date to DD MMM YYYY
+  function formatedDate(dateString){
+    if (!isValidDate(dateString)) { throw new Error('Incorrect date format.'); }
+  	var date = new Date(dateString);
+    return prettyFormat(date.getDate()) + ' ' + localeMonths(date.getMonth()) + ' ' + date.getFullYear();
+  }
 
 	Timetable.prototype = {
+    options : {
+      footer: false,
+      header: false,
+      date: '',            //Use dateString in ISO8601 or IETF RFC 2822 format
+      timeline: false,
+      intevalId: ''
+    },
 		setScope: function(start, end) {
 			if (isValidHourRange(start, end)) {
 				this.scope.hourStart = start;
@@ -54,6 +93,32 @@ Timetable.Renderer = function(tt) {
 
 			return this;
 		},
+	  //Set current date to timetable
+		setCurrentDate: function(){
+			this.options.date = (new Date()).toDateString();
+      return this.options.date;
+		},
+		//Set date to timetable
+		setDate: function(date){
+			if(!isValidDate(date)){ throw new Error('Wrong date format. Use ISO-8601 or IETF RFC 2822 date format.'); }
+			this.options.date = date;
+      return this.options.date;
+		},
+		//Set footer with time(clone header)
+    setFooter: function(){
+    	this.options.footer = true;
+    },
+    setHeader: function(){
+      this.options.header = true;
+      if(this.options.date === '') {this.setCurrentDate(); }
+    },
+    //Set timeline on
+    setTimeline: function(){
+    	this.options.timeline = true;
+    },
+    getOptions: function(){
+    	return this.options;
+    },
 		addLocations: function(newLocations) {
 			function hasProperFormat() {
 				return newLocations instanceof Array;
@@ -90,11 +155,24 @@ Timetable.Renderer = function(tt) {
 				location: location,
 				startDate: start,
 				endDate: end,
-				options: optionsHasValidType ? options : undefined
+				options: optionsHasValidType ? options : undefined,
+				id: 'time-entry-' + id
 			});
 
+      id++;
 			return this;
-		}
+		},
+    removeEvent: function(id){
+      var index;
+      for(var i = 0; i < this.events.length; i++){
+          if(this.events[i].id === id){
+              index = i;
+          }
+      }
+      if (index > -1) {
+          this.events.splice(index, 1);
+      }
+    }
 	};
 
 	function emptyNode(node) {
@@ -107,6 +185,8 @@ Timetable.Renderer = function(tt) {
 		var prefix = hour < 10 ? '0' : '';
 		return prefix + hour + ':00';
 	}
+
+	var id = 0;
 
 	Timetable.Renderer.prototype = {
 		draw: function(selector) {
@@ -136,11 +216,13 @@ Timetable.Renderer = function(tt) {
 			}
 			function appendColumnHeaders(node) {
 				var headerNode = node.appendChild(document.createElement('header'));
+				if(timetable.options.header) { appendColumnDateHeaders(headerNode); }
 				var headerULNode = headerNode.appendChild(document.createElement('ul'));
 
 				var completed = false;
 				var looped = false;
 
+        headerULNode.className = 'headerTimeUl';
 				for (var hour=timetable.scope.hourStart; !completed;) {
 					var liNode = headerULNode.appendChild(document.createElement('li'));
 					var spanNode = liNode.appendChild(document.createElement('span'));
@@ -156,13 +238,41 @@ Timetable.Renderer = function(tt) {
 					}
 				}
 			}
+			function appendColumnDateHeaders(node) {
+				var headerULNode = node.appendChild(document.createElement('ul'));
+				node.parentNode.getElementsByTagName('header')[0].style.height = '92px';
+				container.getElementsByTagName('aside')[0].style.marginTop = '92px';
+
+				var liNodeDay = headerULNode.appendChild(document.createElement('li'));
+				var divNodeDay = liNodeDay.appendChild(document.createElement('div'));
+				var liNodeNextDay = headerULNode.appendChild(document.createElement('li'));
+				var divNodeNextDay = liNodeNextDay.appendChild(document.createElement('div'));
+				divNodeDay.className = 'time-label';
+				divNodeDay.textContent = formatedDate(timetable.options.date);
+				divNodeNextDay.className = 'time-label';
+        headerULNode.className = 'headerDateUl';
+
+        if (timetable.scope.hourEnd < timetable.scope.hourStart) {
+        	var nextDay = new Date(timetable.options.date);
+        	nextDay.setDate(nextDay.getDate() + 1);
+				  divNodeNextDay.textContent = formatedDate(nextDay.toString());
+          liNodeDay.style.width = (24 - timetable.scope.hourStart) * 96 + 'px';
+          liNodeNextDay.style.width = timetable.scope.hourEnd * 96 + 'px';
+        } else {
+          liNodeDay.style.width = getDurationHours * 96 + 'px';
+        }
+			}
 			function appendTimeRows(node) {
 				var ulNode = node.appendChild(document.createElement('ul'));
+				var footer = timetable.options.footer ? node.appendChild(document.createElement('footer')) : false;
+				if (footer) { footer.appendChild(node.getElementsByClassName('headerTimeUl')[0].cloneNode(true)); }
+
 				ulNode.className = 'room-timeline';
 				for (var k=0; k<timetable.locations.length; k++) {
 					var liNode = ulNode.appendChild(document.createElement('li'));
 					appendLocationEvents(timetable.locations[k], liNode);/**/
 				}
+				if(timetable.options.timeline) { timelineDraw(container); }
 			}
 			function appendLocationEvents(location, node) {
 				for (var k=0; k<timetable.events.length; k++) {
@@ -201,6 +311,36 @@ Timetable.Renderer = function(tt) {
 				aNode.style.left = computeEventBlockOffset(event);
 				smallNode.textContent = event.name;
 			}
+			function timelineDraw(container){
+				var now        = new Date();
+				if(now.valueOf() - (new Date(timetable.options.date)).valueOf() > 24 * 60 * 60 * 1000){
+        	console.log('The date is different from the current one.');
+          return 'NCD';
+				}
+				var nowHour    = now.getHours();
+				var nowMinutes = now.getMinutes();
+				var currDay    = (new Date(timetable.options.date)).getDate();
+        var startHour  = timetable.scope.hourStart;
+        var endHour    = (timetable.scope.hourStart < timetable.scope.hourEnd) ? timetable.scope.hourEnd : timetable.scope.hourEnd + 24;
+        if (nowHour <= startHour && nowHour >= 24*(now.getDate() - currDay) + endHour) {
+        	console.log('End of time range');
+          return 'EOF';
+        }
+        var ttHeight   = window.getComputedStyle(container).height;
+        var timeline   = container.getElementsByTagName('time')[0].appendChild(document.createElement('div'));
+        timeline.className = 'timeline';
+        timeline.style.marginTop = '-' + ttHeight;
+        timeline.style.height    = ttHeight;
+        timeline.style.left   = (nowHour - startHour) * 96 + Math.round(96 / 60 * nowMinutes) + 'px';
+        timetable.options.intervalID = setInterval(() => {
+          if (parseFloat(timeline.style.left) < (endHour - startHour) * 96) {
+          	timeline.style.left =  parseFloat(timeline.style.left) + Math.round(96 / 60) + 'px';
+          } else {
+            clearInterval(timetable.options.intervalID);
+          	return 'EOF';
+          }
+        }, 60000);
+			}
 			function computeEventBlockWidth(event) {
 				var start = event.startDate;
 				var end = event.endDate;
@@ -226,5 +366,7 @@ Timetable.Renderer = function(tt) {
 			appendTimetableSection(container);
 		}
 	};
-
 })();
+
+module.exports.Timetable = Timetable;
+module.exports.Timetable.Renderer =  Timetable.Renderer;
