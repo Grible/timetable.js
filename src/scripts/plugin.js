@@ -335,7 +335,6 @@ Timetable.Renderer = function(tt) {
         timetable.options.intervalID = setInterval(() => {
           if (parseFloat(timeline.style.left) < (endHour - startHour) * 96) {
           	timeline.style.left =  parseFloat(timeline.style.left) + Math.round(96 / 60) + 'px';
-          	console.log(timeline.style.left);
           } else {
             clearInterval(timetable.options.intervalID);
           	return 'EOF';
