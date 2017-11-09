@@ -84,8 +84,7 @@
         .timetable section header li:last-of-type .time-label, .timetable section footer li:last-of-type .time-label {
           transform: translateX(-100%); }
         .timetable section header li div.time-label, .timetable section footer li div.time-label {
-          width: 100%;
-          border-right: 1px #999 solid; }
+          width: 100%; }
         .timetable section header li:last-of-type div.time-label, .timetable section footer li:last-of-type div.time-label {
           transform: translateX(0); }
   .timetable ul.room-timeline {
@@ -140,3 +139,15 @@
       display: block; }
     .timetable .time-entry:hover {
       background-color: #e74030; }
+
+.headerDateUl li:nth-child(even) {
+  background-color: #FDFDFD; }
+
+.headerDateUl li:nth-child(odd) {
+  background-color: #F4F4F4; }
+
+.timeline {
+  border: 1px #ff0000 solid;
+  position: relative;
+  width: 1px;
+  z-index: 10; }

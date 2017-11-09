@@ -15,15 +15,14 @@ module.exports = {
         exclude: /node_modules/,
         use: extractSASS.extract([ 'css-loader', 'sass-loader' ])
       },
-
-        {
-        test: /\.js$/, // include .js files
-          enforce: "pre", // preload the jshint loader
-          exclude: /node_modules/, // exclude any and all files in the node_modules folder
-          use: [{
-            loader: "jshint-loader"
-          }]
-        },
+      {
+      test: /\.js$/, // include .js files
+        enforce: "pre", // preload the jshint loader
+        exclude: /node_modules/, // exclude any and all files in the node_modules folder
+        use: [{
+          loader: "jshint-loader"
+        }]
+      },
       {
         test: /\.js$/,
           exclude: /(node_modules)/,

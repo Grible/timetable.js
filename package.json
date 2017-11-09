@@ -4,7 +4,7 @@
   "description": "Vanilla javascript plugin for building nice responsive timetables",
   "scripts": {
     "build": "./node_modules/.bin/webpack",
-    "build-watch": "./node_modules/.bin/webpack -w",
+    "watch": "./node_modules/.bin/webpack --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
