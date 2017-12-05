@@ -129,9 +129,9 @@ Timetable.Renderer = function (tt) {
                 var index = this.locations.indexOf(OldLocation);
                 this.locations[index] = NewLocation;
             } else {
-                throw new Error('Unknown location or new location already exists');
+                throw new Error('Location not found or new location already exists');
             }
-        },
+        },  
         addEvent: function (name, location, start, end, options) {
             if (!locationExistsIn(location, this.locations)) {
                 throw new Error('Unknown location');
