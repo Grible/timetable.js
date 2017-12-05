@@ -43,15 +43,21 @@ Timetable.Renderer = function (tt) {
         });
         return flag;
     }
-    function getIndexOfEvent(evt, evts, loc)
-    {
+    function getIndexOfEvent(evt, evts, loc) {
         var index = -1;
-        for (var i = 0; i < evts.length; i++)
-        {
-            if (evts[i].name == evt && evts[i].location == loc)
-            {
+        for (var i = 0; i < evts.length; i++) {
+            if (evts[i].name == evt && evts[i].location == loc) {
                 index = i;
                 break;
+            }
+        }
+        return index;
+    }
+    function findEventsFromLocation(loc, evts) {
+        var index = [];
+        for (var i = 0; i < evts.length; i++) {
+            if (evts[i].location == loc) {
+                index.push(i);
             }
         }
         return index;
@@ -99,12 +105,32 @@ Timetable.Renderer = function (tt) {
         },
         removeLocation: function (Location) {
             if (locationExistsIn(Location, this.locations)) {
-                var index = this.locations.indexOf(Location);
-                this.locations.splice(index, 1);
+                var indexEvents = findEventsFromLocation(Location, this.events);
+                console.log(indexEvents);
+                if (indexEvents) {
+                    for (var i = 0; i < indexEvents.length; i++) {
+                        this.removeEvent(this.events[indexEvents[i] - i].name, Location);
+                    }
+                }
+                var indexLocation = this.locations.indexOf(Location);
+                this.locations.splice(indexLocation, 1);
             } else {
                 throw new Error('Location doesnt exists');
             }
             return this;
+        },
+        renameLocation: function (OldLocation, NewLocation) {
+            if (locationExistsIn(OldLocation, this.locations) && !locationExistsIn(NewLocation, this.locations)) {
+                this.events.forEach(function (e) {
+                    if (e.location == OldLocation) {
+                        e.location = NewLocation;
+                    }
+                });
+                var index = this.locations.indexOf(OldLocation);
+                this.locations[index] = NewLocation;
+            } else {
+                throw new Error('Unknown location or new location already exists');
+            }
         },
         addEvent: function (name, location, start, end, options) {
             if (!locationExistsIn(location, this.locations)) {
