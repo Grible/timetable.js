@@ -1,3 +1,8 @@
+0.7.0
+- added support for a click handler, called when an event in the timetable is clicked
+- small styling update based on flexbox
+- cleanup & update of build system
+
 0.6.0
 - added support for adding event options such as URLs, classes, and data attributes
 - a few bug fixes

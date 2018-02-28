@@ -16,9 +16,7 @@ gulp.task('styles', function () {
       includePaths: ['.'],
       onError: console.error.bind(console, 'Sass error:')
     }))
-    .pipe($.postcss([
-      require('autoprefixer-core')({browsers: ['last 1 version']})
-    ]))
+    .pipe($.postcss([ require('autoprefixer')() ]))
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest('.tmp/styles'))
     .pipe(reload({stream: true}));
@@ -37,7 +35,7 @@ gulp.task('html', ['styles'], function () {
 
   return gulp.src('app/*.html')
     .pipe(assets)
-    .pipe($.if('*.css', $.csso()))
+    .pipe($.if('*.css', $.postcss([ require('cssnano')() ])))
     .pipe(assets.restore())
     .pipe($.useref())
     .pipe(gulp.dest('dist'));
