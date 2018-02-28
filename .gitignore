@@ -3,6 +3,7 @@ node_modules
 .idea
 .sass-cache
 bower_components
+yarn-error.log
 
 # SASS #
 .sass-cache/*

@@ -18,6 +18,4 @@
     "dist/scripts/timetable.js",
     "dist/styles/timetablejs.css"
   ],
-  "dependencies": {},
-  "devDependencies": {}
 }
