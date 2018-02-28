@@ -1,5 +1,6 @@
 node_modules
 .tmp
+.idea
 .sass-cache
 bower_components
 
