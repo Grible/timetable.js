@@ -110,6 +110,8 @@ Timetable.Renderer = function(tt) {
 
 	Timetable.Renderer.prototype = {
 		draw: function(selector) {
+      var timetable = this.timetable;
+
 			function checkContainerPrecondition(container) {
 				if (container === null) {
 					throw new Error('Timetable container not found');
@@ -174,31 +176,39 @@ Timetable.Renderer = function(tt) {
 			}
 			function appendEvent(event, node) {
 				var hasOptions = event.options !== undefined;
-				var hasURL, hasAdditionalClass, hasDataAttributes = false;
+				var hasURL, hasAdditionalClass, hasDataAttributes, hasClickHandler = false;
 
-				if(hasOptions) {
-					hasURL = (event.options.url !== undefined) ? true : false;
-					hasAdditionalClass = (event.options.class !== undefined) ? true : false;
-					hasDataAttributes = (event.options.data !== undefined) ? true : false;
+				if (hasOptions) {
+					hasURL = event.options.url !== undefined;
+					hasAdditionalClass = event.options.class !== undefined;
+					hasDataAttributes = event.options.data !== undefined;
+					hasClickHandler = event.options.onClick !== undefined;
 				}
 
 				var elementType = hasURL ? 'a' : 'span';
-				var aNode = node.appendChild(document.createElement(elementType));
-				var smallNode = aNode.appendChild(document.createElement('small'));
-				aNode.title = event.name;
+				var eventNode = node.appendChild(document.createElement(elementType));
+				var smallNode = eventNode.appendChild(document.createElement('small'));
+				eventNode.title = event.name;
 
 				if (hasURL) {
-					aNode.href = event.options.url;
+					eventNode.href = event.options.url;
 				}
-				if(hasDataAttributes){
+
+				if (hasDataAttributes){
 					for (var key in event.options.data) {
-						aNode.setAttribute('data-'+key, event.options.data[key]);
+						eventNode.setAttribute('data-'+key, event.options.data[key]);
 					}
 				}
 
-				aNode.className = hasAdditionalClass ? 'time-entry ' + event.options.class : 'time-entry';
-				aNode.style.width = computeEventBlockWidth(event);
-				aNode.style.left = computeEventBlockOffset(event);
+				if (hasClickHandler) {
+				  eventNode.addEventListener('click', function(e) {
+				    event.options.onClick(event, timetable, e);
+          });
+        }
+
+				eventNode.className = hasAdditionalClass ? 'time-entry ' + event.options.class : 'time-entry';
+				eventNode.style.width = computeEventBlockWidth(event);
+				eventNode.style.left = computeEventBlockOffset(event);
 				smallNode.textContent = event.name;
 			}
 			function computeEventBlockWidth(event) {
@@ -217,7 +227,6 @@ Timetable.Renderer = function(tt) {
 				return hoursBeforeEvent / scopeDurationHours * 100 + '%';
 			}
 
-			var timetable = this.timetable;
 			var scopeDurationHours = getDurationHours(timetable.scope.hourStart, timetable.scope.hourEnd);
 			var container = document.querySelector(selector);
 			checkContainerPrecondition(container);
