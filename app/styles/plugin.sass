@@ -5,6 +5,9 @@
  * Default settings
  * ==========================================================================
 
+// general
+$timetable-use-sticky-header: false !default
+
 // dimensions
 $timetable-hour-column-width: 96px !default
 $timetable-hour-row-height: 46px !default
@@ -101,7 +104,7 @@ $timetable-background-color: white !default
 			display: block
 			background-color: $timetable-background-color
 			height: $timetable-hour-row-height
-			position: sticky
+			position: if($timetable-use-sticky-header, sticky, relative)
 			margin-top: - $timetable-hour-row-height
 			top: 0
 
@@ -120,7 +123,7 @@ $timetable-background-color: white !default
 			-webkit-overflow-scrolling: touch
 
 		> header
-			position: sticky
+			position: if($timetable-use-sticky-header, sticky, relative)
 			top: 0
 			z-index: 3
 			width: 100%
