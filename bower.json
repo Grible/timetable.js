@@ -17,5 +17,8 @@
   "main": [
     "dist/scripts/timetable.js",
     "dist/styles/timetablejs.css"
-  ]
+  ],
+  "dependencies": {
+    "syncscroll": "^0.0.3"
+  }
 }
