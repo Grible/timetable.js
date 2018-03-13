@@ -31,7 +31,7 @@ gulp.task('jshint', function () {
 });
 
 gulp.task('html', ['styles'], function () {
-  var assets = $.useref.assets({searchPath: ['.tmp', 'app', '.']});
+  var assets = $.useref.assets({searchPath: ['.tmp', 'app', '.', 'bower_components']});
 
   return gulp.src('app/*.html')
     .pipe(assets)
@@ -76,7 +76,7 @@ gulp.task('serve', ['styles'], function () {
     notify: false,
     port: 9000,
     server: {
-      baseDir: ['.tmp', 'app'],
+      baseDir: ['.tmp', 'app', 'bower_components'],
       index: 'demo.html',
     }
   });
