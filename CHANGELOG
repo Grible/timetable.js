@@ -1,3 +1,7 @@
+0.8.0
+- added support for sticky header: time indicator scrolling along when the timetable is larger than the viewport
+- converted remaining floating styles to flexbox
+
 0.7.0
 - added support for a click handler, called when an event in the timetable is clicked
 - small styling update based on flexbox
