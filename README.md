@@ -61,11 +61,14 @@ That's it!
 ## Changing the looks
 Instead of adding the `timetablejs.css` directly to your HTML, you could import `app/styles/plugin.sass` to your own SASS file. All colors and spacing values are defined as default variables which you can easily override. These are the defaults:
 ```sass
+// general
+$timetable-use-sticky-header: false !default
+
 // dimensions
 $timetable-hour-column-width: 96px !default
 $timetable-hour-row-height: 46px !default
 $timetable-heading-height: 30px !default
-$timetable-breakpoint: "only screen and (max-width: 960px)" !default
+
 // colors & decoration
 $timetable-grid-color: #E5E5E5 !default
 $timetable-grid: 1px solid $timetable-grid-color !default
@@ -80,7 +83,10 @@ $timetable-entry-color: #EC6A5E !default
 $timetable-entry-color-hover: darken($timetable-entry-color, 10%) !default
 $timetable-entry-border: 1px solid darken($timetable-entry-color, 15%) !default
 $timetable-entry-padding: 10px !default
+$timetable-background-color: white !default
 ```
+
+The option `$timetable-use-sticky-header` makes the time indicator stick to the top of the screen while scrolling down, which can be very pleasant with large timetables or on mobile devices. Note that this is not yet widely supported in browsers, although all modern (non-IE) browsers support it. Browsers that don't support it will fall back to a non-sticky header automatically. [More info here](https://caniuse.com/#feat=css-sticky). 
 
 Alternatively you could override the css styles manually.
 
