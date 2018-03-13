@@ -60,26 +60,25 @@ $timetable-entry-padding: 10px !default
 .timetable
 	text-align: center
 	display: flex
-	flex-direction: row
 	align-items: stretch
 	width: 100%
-
+	max-width: 100%
 	box-sizing: border-box
 
-	+clearfix
-
-	*, *:before, *:after
+	*
 		box-sizing: inherit
+
+	ul
+		list-style-type: none
+		margin: 0
 
 	ul, li
 		margin: 0
 		padding: 0
 		list-style-type: none
 
-	aside, section
-		float: left
-
-	aside
+	> aside
+		flex: 0
 		max-width: 30%
 		padding: 0 !important
 		margin-top: $timetable-hour-row-height
@@ -95,56 +94,59 @@ $timetable-entry-padding: 10px !default
 		.row-heading
 			+ellipsis
 
-	ul
-		list-style-type: none
-		margin: 0
-
 	aside li, time li
 		height: $timetable-hour-row-height
 
-	section
-		flex-grow: 1
+	> section
+		flex: 3 0 0
+		width: 0
 		padding: 0 !important
-		overflow-x: scroll
-		-webkit-overflow-scrolling: touch
 
 		time
-			white-space: nowrap
-			display: inline-block
+			display: block
+			width: 100%
+			overflow-x: scroll
+			-webkit-overflow-scrolling: touch
 
-		header
+		> header
+			position: sticky
+			top: 0
+			z-index: 2
+			width: 100%
+			overflow: hidden
 			height: $timetable-hour-row-height
 			transform-style: preserve-3d
-			+clearfix
-			font-size: 0
+			display: flex
+			white-space: nowrap
+
 			li
 				display: inline-block
-				font-size: 1rem
 				overflow: visible
-				width: 0
 				line-height: $timetable-hour-row-height
-				display: inline-block
 				position: relative
+				width: $timetable-hour-column-width
 
-				&:not(:last-of-type)
-					width: $timetable-hour-column-width
 				.time-label
 					display: block
 					position: absolute
 					left: 0
 				&:not(:first-of-type) .time-label
 					transform: translateX(-50%)
-				&:last-of-type .time-label
-					transform: translateX(-100%)
+				&:last-of-type
+					width: 0
+					.time-label
+						transform: translateX(-100%)
 
 	ul.room-timeline
 		border-left: none
-		position: relative
-		overflow: hidden
+		display: flex
+		flex-direction: column
+		align-items: stretch
 
 		li
 			position: relative
 			background-color: $timetable-row-even-color
+			height: $timetable-hour-row-height
 			&:nth-of-type(odd)
 				background-color: $timetable-row-uneven-color
 			&:first-of-type
@@ -176,7 +178,7 @@ $timetable-entry-padding: 10px !default
 		transition: 200ms background-color
 		height: $timetable-hour-row-height - 1px
 		display: block
-		position: absolute
+		position: relative
 		z-index: 2
 		padding: 0 $timetable-entry-padding
 		white-space: normal

@@ -131,13 +131,18 @@ Timetable.Renderer = function(tt) {
 				}
 			}
 			function appendTimetableSection(container) {
-				var sectionNode = container.appendChild(document.createElement('section'));
+        var sectionNode = container.appendChild(document.createElement('section'));
+				var headerNode = appendColumnHeaders(sectionNode);
 				var timeNode = sectionNode.appendChild(document.createElement('time'));
-				appendColumnHeaders(timeNode);
-				appendTimeRows(timeNode);
+        timeNode.className = 'syncscroll';
+        timeNode.setAttribute('name', 'scrollheader');
+        var width = headerNode.scrollWidth + 'px';
+				appendTimeRows(timeNode, width);
 			}
 			function appendColumnHeaders(node) {
 				var headerNode = node.appendChild(document.createElement('header'));
+				headerNode.className = 'syncscroll';
+        headerNode.setAttribute('name', 'scrollheader');
 				var headerULNode = headerNode.appendChild(document.createElement('ul'));
 
 				var completed = false;
@@ -157,9 +162,11 @@ Timetable.Renderer = function(tt) {
 						looped = true;
 					}
 				}
+				return headerNode;
 			}
-			function appendTimeRows(node) {
+			function appendTimeRows(node, width) {
 				var ulNode = node.appendChild(document.createElement('ul'));
+        ulNode.style.width = width;
 				ulNode.className = 'room-timeline';
 				for (var k=0; k<timetable.locations.length; k++) {
 					var liNode = ulNode.appendChild(document.createElement('li'));
