@@ -24,6 +24,7 @@ $timetable-entry-color: #EC6A5E !default
 $timetable-entry-color-hover: darken($timetable-entry-color, 10%) !default
 $timetable-entry-border: 1px solid darken($timetable-entry-color, 15%) !default
 $timetable-entry-padding: 10px !default
+$timetable-background-color: white !default
 
 /* ==========================================================================
  * Mixins
@@ -78,11 +79,12 @@ $timetable-entry-padding: 10px !default
 		list-style-type: none
 
 	> aside
-		flex: 0
+		flex: none
 		max-width: 30%
 		padding: 0 !important
 		margin-top: $timetable-hour-row-height
 		border-right: $timetable-row-header-gap
+		position: relative
 		li
 			padding: 0 $timetable-row-header-padding
 			background-color: $timetable-row-header-color
@@ -94,11 +96,20 @@ $timetable-entry-padding: 10px !default
 		.row-heading
 			+ellipsis
 
+		&::before
+			content: ''
+			display: block
+			background-color: $timetable-background-color
+			height: $timetable-hour-row-height
+			position: sticky
+			margin-top: - $timetable-hour-row-height
+			top: 0
+
 	aside li, time li
 		height: $timetable-hour-row-height
 
 	> section
-		flex: 3 0 0
+		flex: 3 0 auto
 		width: 0
 		padding: 0 !important
 
@@ -111,18 +122,20 @@ $timetable-entry-padding: 10px !default
 		> header
 			position: sticky
 			top: 0
-			z-index: 2
+			z-index: 3
 			width: 100%
 			overflow: hidden
-			height: $timetable-hour-row-height
+			background-color: $timetable-background-color
 			transform-style: preserve-3d
-			display: flex
-			white-space: nowrap
+
+			ul
+				display: flex
+				height: $timetable-hour-row-height
+				align-items: center
 
 			li
-				display: inline-block
-				overflow: visible
-				line-height: $timetable-hour-row-height
+				flex: none
+				display: block
 				position: relative
 				width: $timetable-hour-column-width
 
