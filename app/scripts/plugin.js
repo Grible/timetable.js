@@ -240,6 +240,7 @@ Timetable.Renderer = function(tt) {
 			emptyNode(container);
 			appendTimetableAside(container);
 			appendTimetableSection(container);
+			syncscroll.reset();
 		}
 	};
 
