@@ -18,6 +18,7 @@
   "jquery": true,
   "globals": {
     "Timetable": false,
+    "syncscroll": false,
     // MOCHA/CHAI
     "describe": false,
     "it": false,
