@@ -1,6 +1,6 @@
 {
   "name": "timetable.js",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Vanilla javascript plugin for building nice responsive timetables",
   "keywords": [
     "timetable",
