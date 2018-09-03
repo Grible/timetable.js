@@ -201,10 +201,19 @@ $timetable-background-color: white !default
 		color: white
 		border: $timetable-entry-border
 		+valign-parent
-		small
+		small.name
 			+valign-middle
 			display: block
+		small.hours
+			+valign-middle
+			display: none
 
 		&:hover
 			background-color: $timetable-entry-color-hover
+			small.name
+				+valign-middle
+				display: none
+			small.hours
+				+valign-middle
+				display: block
 

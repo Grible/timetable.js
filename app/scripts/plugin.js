@@ -194,7 +194,10 @@ Timetable.Renderer = function(tt) {
 
 				var elementType = hasURL ? 'a' : 'span';
 				var eventNode = node.appendChild(document.createElement(elementType));
-				var smallNode = eventNode.appendChild(document.createElement('small'));
+				var nameNode = eventNode.appendChild(document.createElement('small'));
+				nameNode.classList.add('name');
+                var hourNode = eventNode.appendChild(document.createElement('small'));
+                hourNode.classList.add('hours');
 				eventNode.title = event.name;
 
 				if (hasURL) {
@@ -216,7 +219,8 @@ Timetable.Renderer = function(tt) {
 				eventNode.className = hasAdditionalClass ? 'time-entry ' + event.options.class : 'time-entry';
 				eventNode.style.width = computeEventBlockWidth(event);
 				eventNode.style.left = computeEventBlockOffset(event);
-				smallNode.textContent = event.name;
+                nameNode.textContent = event.name;
+                hourNode.textContent = ('0' + event.startDate.getHours()).substr(-2) + ':' + ('0' + event.startDate.getMinutes()).substr(-2) + ' - ' + ('0' + event.endDate.getHours()).substr(-2) + ':' + ('0' + event.endDate.getMinutes()).substr(-2);
 			}
 			function computeEventBlockWidth(event) {
 				var start = event.startDate;
