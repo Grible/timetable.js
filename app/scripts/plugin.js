@@ -32,7 +32,9 @@ Timetable.Renderer = function(tt) {
 		return number >= 0 && number < 24;
 	}
 	function locationExistsIn(loc, locs) {
-		return locs.indexOf(loc) !== -1;
+		return locs.findIndex(function(l){
+           return l.id === loc;
+		}) !== -1;
 	}
 	function isValidTimeRange(start, end) {
 		var correctTypes = start instanceof Date && end instanceof Date;
@@ -75,8 +77,28 @@ Timetable.Renderer = function(tt) {
 
 			return this;
 		},
+        addLocation: function(newLocation) {
+            function hasProperFormat() {
+                return newLocation instanceof Object;
+            }
+
+            var existingLocations = this.locations;
+
+            if (hasProperFormat()) {
+            	if (!locationExistsIn(newLocation, existingLocations)) {
+            		existingLocations.push(newLocation);
+            	} else {
+            		throw new Error('Location already exists');
+            	}
+            } else {
+                throw new Error('Tried to add locations in wrong format');
+            }
+
+            return this;
+        },
 		addEvent: function(name, location, start, end, options) {
 			if (!locationExistsIn(location, this.locations)) {
+				console.log(location);
 				throw new Error('Unknown location');
 			}
 			if (!isValidTimeRange(start, end)) {
@@ -127,7 +149,7 @@ Timetable.Renderer = function(tt) {
 					var liNode = ulNode.appendChild(document.createElement('li'));
 					var spanNode = liNode.appendChild(document.createElement('span'));
 					spanNode.className = 'row-heading';
-					spanNode.textContent = timetable.locations[k];
+					spanNode.textContent = timetable.locations[k].name;
 				}
 			}
 			function appendTimetableSection(container) {
@@ -176,7 +198,7 @@ Timetable.Renderer = function(tt) {
 			function appendLocationEvents(location, node) {
 				for (var k=0; k<timetable.events.length; k++) {
 					var event = timetable.events[k];
-					if (event.location === location) {
+					if (event.location === location.id) {
 						appendEvent(event, node);
 					}
 				}
