@@ -27,6 +27,7 @@ Make a timetable object, optionally set the scope in hours (the visible hours in
 ```javascript
 var timetable = new Timetable();
 timetable.setScope(9, 17); // optional, only whole hours between 0 and 23
+timetable.useTwelveHour(); //optional, displays hours in 12 hour format (1:00PM)
 ```
 Add some locations:
 ```javascript
