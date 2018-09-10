@@ -136,8 +136,8 @@ Timetable.Renderer = function(tt) {
 				var timeNode = sectionNode.appendChild(document.createElement('time'));
         timeNode.className = 'syncscroll';
         timeNode.setAttribute('name', 'scrollheader');
-        var width = headerNode.scrollWidth + 'px';
-				appendTimeRows(timeNode, width);
+        var width = headerNode.firstChild.offsetWidth + 'px';
+        appendTimeRows(timeNode, width);
 			}
 			function appendColumnHeaders(node) {
 				var headerNode = node.appendChild(document.createElement('header'));
