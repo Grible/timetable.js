@@ -31,10 +31,11 @@ gulp.task('jshint', function () {
 });
 
 gulp.task('html', ['styles'], function () {
-  var assets = $.useref.assets({searchPath: ['.tmp', 'app', '.', 'bower_components']});
+  var assets = $.useref.assets({searchPath: ['app', 'bower_components']});
 
   return gulp.src('app/*.html')
     .pipe(assets)
+    .pipe($.if('*.js', $.umd()))
     .pipe($.if('*.js', $.uglify()))
     .pipe($.if('*.css', $.postcss([ require('cssnano')() ])))
     .pipe(assets.restore())

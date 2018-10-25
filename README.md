@@ -8,6 +8,10 @@ Okay: [**demo**](http://timetablejs.grible.co). Also, have a look at the website
 Install with bower, or alternatively download the [ZIP](https://github.com/Grible/timetable.js/archive/master.zip):
 
 ```
+npm install timetable
+```
+_or_
+```
 bower install timetable
 ```
 
