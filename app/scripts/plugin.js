@@ -8,6 +8,7 @@ var Timetable = function() {
 		hourEnd: 17
 	};
 	this.usingTwelveHour = false;
+	this.timeScale = 1;
 	this.locations = [];
 	this.events = [];
 };
@@ -107,21 +108,22 @@ Timetable.Renderer = function(tt) {
 		}
 	}
 
-	function prettyFormatHour(hour, usingTwelveHour) {
+	function prettyFormatHour(hour, minute, usingTwelveHour) {
 		var prettyHour;
-			if(usingTwelveHour) {
-					var period = hour >= 12 ? 'PM':'AM';
-					prettyHour = ((hour + 11) % 12 + 1) + ':00' + period;
-			} else {
-					var prefix = hour < 10 ? '0' : '';
-					prettyHour = prefix + hour + ':00';
-			}
+		var prefixHr = hour < 10 ? '0' : '';
+		var prefixMn = minute < 10 ? '0' : '';
+		if(usingTwelveHour) {
+			var period = hour >= 12 ? 'PM' : 'AM';
+			prettyHour = ((hour + 11) % 12 + 1) + ':' + prefixMn + minute + period;
+		} else {
+			return prefixHr + hour + ':' + prefixMn + minute;
+		}
 		return prettyHour;
 	}
 
 	Timetable.Renderer.prototype = {
 		draw: function(selector) {
-      var timetable = this.timetable;
+			var timetable = this.timetable;
 
 			function checkContainerPrecondition(container) {
 				if (container === null) {
@@ -134,7 +136,7 @@ Timetable.Renderer = function(tt) {
 				appendRowHeaders(asideULNode);
 			}
 			function appendRowHeaders(ulNode) {
-				for (var k=0; k<timetable.locations.length; k++) {
+				for (var k = 0; k < timetable.locations.length; k++) {
 					var liNode = ulNode.appendChild(document.createElement('li'));
 					var spanNode = liNode.appendChild(document.createElement('span'));
 					spanNode.className = 'row-heading';
@@ -142,50 +144,62 @@ Timetable.Renderer = function(tt) {
 				}
 			}
 			function appendTimetableSection(container) {
-        var sectionNode = container.appendChild(document.createElement('section'));
+				var sectionNode = container.appendChild(document.createElement('section'));
 				var headerNode = appendColumnHeaders(sectionNode);
 				var timeNode = sectionNode.appendChild(document.createElement('time'));
-        timeNode.className = 'syncscroll';
-        timeNode.setAttribute('name', 'scrollheader');
-        var width = headerNode.scrollWidth + 'px';
+				timeNode.className = 'syncscroll';
+				timeNode.setAttribute('name', 'scrollheader');
+				var width = headerNode.firstChild.offsetWidth + 'px';
 				appendTimeRows(timeNode, width);
 			}
 			function appendColumnHeaders(node) {
 				var headerNode = node.appendChild(document.createElement('header'));
 				headerNode.className = 'syncscroll';
-        headerNode.setAttribute('name', 'scrollheader');
+				headerNode.setAttribute('name', 'scrollheader');
 				var headerULNode = headerNode.appendChild(document.createElement('ul'));
 
 				var completed = false;
 				var looped = false;
 
-				for (var hour=timetable.scope.hourStart; !completed;) {
+				var minute = 0,
+					mloop = 0;
+				for (var hour = timetable.scope.hourStart; !completed;) {
 					var liNode = headerULNode.appendChild(document.createElement('li'));
 					var spanNode = liNode.appendChild(document.createElement('span'));
 					spanNode.className = 'time-label';
-					spanNode.textContent = prettyFormatHour(hour, timetable.usingTwelveHour);
+					spanNode.textContent = prettyFormatHour(hour, minute, timetable.usingTwelveHour);
 
 					if (hour === timetable.scope.hourEnd && (timetable.scope.hourStart !== timetable.scope.hourEnd || looped)) {
 						completed = true;
 					}
-					if (++hour === 24) {
+
+					if (++mloop === timetable.timeScale) {
+						hour++;
+						mloop = minute = 0;
+					} else {
+						minute += (60 / timetable.timeScale);
+					}
+
+					if (hour === 24) {
 						hour = 0;
 						looped = true;
 					}
 				}
 				return headerNode;
 			}
+
 			function appendTimeRows(node, width) {
 				var ulNode = node.appendChild(document.createElement('ul'));
-        ulNode.style.width = width;
+				ulNode.style.width = width;
 				ulNode.className = 'room-timeline';
-				for (var k=0; k<timetable.locations.length; k++) {
+				for (var k = 0; k < timetable.locations.length; k++) {
 					var liNode = ulNode.appendChild(document.createElement('li'));
-					appendLocationEvents(timetable.locations[k], liNode);/**/
+					appendLocationEvents(timetable.locations[k], liNode);
 				}
 			}
+
 			function appendLocationEvents(location, node) {
-				for (var k=0; k<timetable.events.length; k++) {
+				for (var k = 0; k < timetable.events.length; k++) {
 					var event = timetable.events[k];
 					if (event.location === location) {
 						appendEvent(event, node);
@@ -212,17 +226,17 @@ Timetable.Renderer = function(tt) {
 					eventNode.href = event.options.url;
 				}
 
-				if (hasDataAttributes){
+				if (hasDataAttributes) {
 					for (var key in event.options.data) {
-						eventNode.setAttribute('data-'+key, event.options.data[key]);
+						eventNode.setAttribute('data-' + key, event.options.data[key]);
 					}
 				}
 
 				if (hasClickHandler) {
-				  eventNode.addEventListener('click', function(e) {
-				    event.options.onClick(event, timetable, e);
-          });
-        }
+					eventNode.addEventListener('click', function(e) {
+						event.options.onClick(event, timetable, e);
+					});
+				}
 
 				eventNode.className = hasAdditionalClass ? 'time-entry ' + event.options.class : 'time-entry';
 				eventNode.style.width = computeEventBlockWidth(event);
@@ -241,7 +255,7 @@ Timetable.Renderer = function(tt) {
 			function computeEventBlockOffset(event) {
 				var scopeStartHours = timetable.scope.hourStart;
 				var eventStartHours = event.startDate.getHours() + (event.startDate.getMinutes() / 60);
-				var hoursBeforeEvent =  getDurationHours(scopeStartHours, eventStartHours);
+				var hoursBeforeEvent = getDurationHours(scopeStartHours, eventStartHours);
 				return hoursBeforeEvent / scopeDurationHours * 100 + '%';
 			}
 
