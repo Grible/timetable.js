@@ -28,6 +28,7 @@ Make a timetable object, optionally set the scope in hours (the visible hours in
 var timetable = new Timetable();
 timetable.setScope(9, 17); // optional, only whole hours between 0 and 23
 timetable.useTwelveHour(); //optional, displays hours in 12 hour format (1:00PM)
+timetable.timeScale = 1; // optional, use factor of 2 (2 = 30min scale, 4 = 15min scale)
 ```
 Add some locations:
 ```javascript
@@ -47,7 +48,7 @@ var options = {
     id: 4,
     ticketType: 'VIP'
   },
-  onClick: function(event, timetable, clickEvent) {} // custom click handler, which is passed the event object and full timetable as context  
+  onClick: function(event, timetable, clickEvent) {} // custom click handler, which is passed the event object and full timetable as context
 };
 timetable.addEvent('Jam Session', 'Nile', new Date(2015,7,17,21,15), new Date(2015,7,17,23,30), options);
  ```
@@ -87,7 +88,7 @@ $timetable-entry-padding: 10px !default
 $timetable-background-color: white !default
 ```
 
-The option `$timetable-use-sticky-header` makes the time indicator stick to the top of the screen while scrolling down, which can be very pleasant with large timetables or on mobile devices. Note that this is not yet widely supported in browsers, although all modern (non-IE) browsers support it. Browsers that don't support it will fall back to a non-sticky header automatically. [More info here](https://caniuse.com/#feat=css-sticky). 
+The option `$timetable-use-sticky-header` makes the time indicator stick to the top of the screen while scrolling down, which can be very pleasant with large timetables or on mobile devices. Note that this is not yet widely supported in browsers, although all modern (non-IE) browsers support it. Browsers that don't support it will fall back to a non-sticky header automatically. [More info here](https://caniuse.com/#feat=css-sticky).
 
 Alternatively you could override the css styles manually.
 
