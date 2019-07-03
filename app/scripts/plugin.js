@@ -7,6 +7,7 @@ var Timetable = function() {
 		hourStart: 9,
 		hourEnd: 17
 	};
+	this.usingTwelveHour = false;
 	this.locations = [];
 	this.events = [];
 };
@@ -55,6 +56,9 @@ Timetable.Renderer = function(tt) {
 			}
 
 			return this;
+		},
+		useTwelveHour: function(){
+			this.usingTwelveHour = true;
 		},
 		addLocations: function(newLocations) {
 			function hasProperFormat() {
@@ -125,9 +129,16 @@ Timetable.Renderer = function(tt) {
 		}
 	}
 
-	function prettyFormatHour(hour) {
-		var prefix = hour < 10 ? '0' : '';
-		return prefix + hour + ':00';
+	function prettyFormatHour(hour, usingTwelveHour) {
+		var prettyHour;
+			if(usingTwelveHour) {
+					var period = hour >= 12 ? 'PM':'AM';
+					prettyHour = ((hour + 11) % 12 + 1) + ':00' + period;
+			} else {
+					var prefix = hour < 10 ? '0' : '';
+					prettyHour = prefix + hour + ':00';
+			}
+		return prettyHour;
 	}
 
 	Timetable.Renderer.prototype = {
@@ -174,7 +185,7 @@ Timetable.Renderer = function(tt) {
 					var liNode = headerULNode.appendChild(document.createElement('li'));
 					var spanNode = liNode.appendChild(document.createElement('span'));
 					spanNode.className = 'time-label';
-					spanNode.textContent = prettyFormatHour(hour);
+					spanNode.textContent = prettyFormatHour(hour, timetable.usingTwelveHour);
 
 					if (hour === timetable.scope.hourEnd && (timetable.scope.hourStart !== timetable.scope.hourEnd || looped)) {
 						completed = true;
