@@ -2252,7 +2252,7 @@ gulp-jshint@^1.5.3:
     rcloader "0.1.2"
     through2 "~0.6.1"
 
-gulp-load-plugins@^0.8.0:
+gulp-load-plugins@^0.8.1:
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/gulp-load-plugins/-/gulp-load-plugins-0.8.1.tgz#0a8261d059dfddc918fda406c8232e72fa34d2ea"
   dependencies:
@@ -2404,7 +2404,7 @@ gulp-util@^3.0, gulp-util@^3.0.0, gulp-util@^3.0.1, gulp-util@^3.0.5:
     through2 "^2.0.0"
     vinyl "^0.5.0"
 
-gulp@^3.6.0:
+gulp@^3.9.1:
   version "3.9.1"
   resolved "https://registry.yarnpkg.com/gulp/-/gulp-3.9.1.tgz#571ce45928dd40af6514fc4011866016c13845b4"
   dependencies:
@@ -2572,8 +2572,8 @@ homedir-polyfill@^1.0.1:
     parse-passwd "^1.0.0"
 
 hosted-git-info@^2.1.4:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.6.0.tgz#23235b29ab230c576aab0d4f13fc046b0b038222"
+  version "2.8.9"
+  resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.8.9.tgz#dffc0bf9a21c02209090f2aa69429e1414daf3f9"
 
 html-comment-regex@^1.1.0:
   version "1.1.1"
